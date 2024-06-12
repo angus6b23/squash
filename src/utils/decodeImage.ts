@@ -17,6 +17,7 @@ const decodeImage = async (input: File) => {
     ctx.drawImage(img, 0, 0);
     return ctx.getImageData(0, 0, img.width, img.height) as ImageData;
   } catch (e) {
+    console.log(e);
     return new Error("Unable to decode image:" + (e as Error).message);
   }
 };

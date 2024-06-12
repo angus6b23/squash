@@ -84,7 +84,7 @@ const encodeImage = async (
         return new Error("Unknown format");
     }
   } catch (e) {
-    console.error(e);
+    return e as Error;
   }
 };
 

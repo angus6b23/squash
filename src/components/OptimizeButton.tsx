@@ -11,6 +11,7 @@ const OptimizeButton = (): ReactNode => {
   useEffect(() => {
     bulkWorker.addEventListener("message", (e) => {
       console.log(e);
+      window.open(e.data, "_blank");
     });
   }, [bulkWorker]);
   const handleOptimize = () => {

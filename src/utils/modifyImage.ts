@@ -54,7 +54,6 @@ export const resize = async (input: File, options: BulkOptions["resize"]) => {
     } else {
       targetMethod = options.method;
     }
-
     await resizeInit();
     const result = resizeWasm(
       imgData,

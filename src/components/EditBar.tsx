@@ -1,19 +1,10 @@
 import { addFile } from "@/store/file";
-import {
-  BaseSyntheticEvent,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  type ReactElement,
-} from "react";
+import { BaseSyntheticEvent, useRef, type ReactElement } from "react";
 import { PiCameraPlus } from "react-icons/pi";
 import { useDispatch } from "react-redux";
 import Resize from "./Resize";
 import Rotate from "./Rotate";
-import { workerContext } from "@/store/workerContext";
-import currentFileId from "@/store/currentFileId";
-import getCurrentFile from "@/utils/getCurrentFile";
+import OptimizeButton from "./OptimizeButton";
 
 const AddImageButton = () => {
   const dispatch = useDispatch();
@@ -28,7 +19,7 @@ const AddImageButton = () => {
       dispatch(
         addFile({
           name: newFile.name,
-          blob: newFile,
+          url: URL.createObjectURL(newFile),
         }),
       );
     });
@@ -56,12 +47,6 @@ const AddImageButton = () => {
 };
 
 export default function EditBar(): ReactElement {
-  const [currentFile, setCurrentFile] = useState(getCurrentFile());
-
-  useEffect(() => {
-    setCurrentFile(getCurrentFile());
-  }, [currentFileId]);
-
   return (
     <>
       <nav className="flex justify-between items-center py-2 px-4 w-full gap-x-4 h-16">
@@ -70,9 +55,7 @@ export default function EditBar(): ReactElement {
           <Resize />
           <Rotate />
         </div>
-        <button className="btn btn-accent" onClick={handleClick}>
-          Optimize All
-        </button>
+        <OptimizeButton />
       </nav>
     </>
   );
