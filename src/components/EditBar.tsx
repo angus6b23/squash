@@ -62,12 +62,6 @@ export default function EditBar(): ReactElement {
     setCurrentFile(getCurrentFile());
   }, [currentFileId]);
 
-  const { worker } = useContext(workerContext);
-
-  const handleClick = () => {
-    worker.postMessage({ file: currentFile });
-  };
-
   return (
     <>
       <nav className="flex justify-between items-center py-2 px-4 w-full gap-x-4 h-16">

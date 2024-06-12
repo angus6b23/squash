@@ -11,7 +11,7 @@ export interface File {
 
 export interface UploadedFile {
   name: string;
-  blob: Blob;
+  url: string;
 }
 
 const initialState: File[] = [];
@@ -21,8 +21,10 @@ export const fileSlice = createSlice({
   initialState,
   reducers: {
     addFile: (state: File[], action: PayloadAction<UploadedFile>) => {
-      const url = URL.createObjectURL(action.payload.blob);
-      return [...state, { name: action.payload.name, id: nanoid(5), url: url }];
+      return [
+        ...state,
+        { name: action.payload.name, id: nanoid(5), url: action.payload.url },
+      ];
     },
     removeFile: (state, action: PayloadAction<string>) => {
       return state.filter((file) => file.id !== action.payload);

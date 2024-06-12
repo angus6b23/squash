@@ -1,10 +1,13 @@
 import { File } from "../store/file";
+import { getBlob } from "./convertUtils";
 
 const decodeImage = async (input: File) => {
   try {
     // Create a new image
-    const res = await fetch(input.url);
-    const imgData = await res.blob();
+    const imgData = await getBlob(input.url);
+    if (imgData instanceof Error) {
+      throw imgData;
+    }
     const img = await createImageBitmap(imgData);
     // Create a new canvas
     const canvas = new OffscreenCanvas(0, 0);

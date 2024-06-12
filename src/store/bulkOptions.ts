@@ -1,7 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
+import { AnyEncodeOption } from "@/utils/encodeImage";
+import {
+  defaultAvifOption,
+  defaultJxlOption,
+  defaultMozjpegOption,
+  defaultOxipngOption,
+  defaultQoiOption,
+  defaultWebpOption,
+} from "@/utils/defaultOptions";
 
+enum resizeMethod {
+  Triange,
+  Catrom,
+  Mitchell,
+  Lancozs3,
+  default,
+}
 export interface BulkOptions {
   resize: {
     enabled: boolean;
@@ -9,11 +25,15 @@ export interface BulkOptions {
     upscale: boolean;
     width: number | undefined;
     height: number | undefined;
-    method: string;
+    method: resizeMethod;
   };
   rotate: {
     enabled: boolean;
     degree: 0 | 90 | 180 | 270;
+  };
+  output: {
+    format: "avif" | "mozjpeg" | "qoi" | "oxipng" | "jpgxl" | "webp" | "auto";
+    option: AnyEncodeOption;
   };
 }
 
@@ -24,11 +44,15 @@ const initialState: BulkOptions = {
     upscale: false,
     width: undefined,
     height: undefined,
-    method: "default",
+    method: 4,
   },
   rotate: {
     enabled: false,
     degree: 0,
+  },
+  output: {
+    format: "auto",
+    option: {},
   },
 };
 
@@ -47,6 +71,70 @@ export const bulkOptionsSlice = createSlice({
         ...state,
         rotate: action.payload,
       };
+    },
+    handleOutputFormat: (
+      state,
+      action: PayloadAction<BulkOptions["output"]["format"]>,
+    ) => {
+      switch (action.payload) {
+        case "auto": {
+          return {
+            ...state,
+            output: {
+              format: "auto",
+              option: {},
+            },
+          };
+        }
+        case "avif":
+          return {
+            ...state,
+            output: {
+              format: "avif",
+              option: defaultAvifOption,
+            },
+          };
+        case "mozjpeg":
+          return {
+            ...state,
+            output: {
+              format: "mozjpeg",
+              option: defaultMozjpegOption,
+            },
+          };
+        case "jpgxl":
+          return {
+            ...state,
+            output: {
+              format: "jpgxl",
+              option: defaultJxlOption,
+            },
+          };
+        case "oxipng":
+          return {
+            ...state,
+            output: {
+              format: "oxipng",
+              option: defaultOxipngOption,
+            },
+          };
+        case "webp":
+          return {
+            ...state,
+            output: {
+              format: "webp",
+              option: defaultWebpOption,
+            },
+          };
+        case "qoi":
+          return {
+            ...state,
+            output: {
+              format: "qoi",
+              option: defaultQoiOption,
+            },
+          };
+      }
     },
   },
 });
