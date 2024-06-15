@@ -5,15 +5,20 @@ import oxipng_enc, {
 } from "@/codecs/oxipng/pkg/squoosh_oxipng";
 import mozjpeg_enc from "@/codecs/mozjpeg/enc/mozjpeg_enc";
 import qoi_enc from "@/codecs/qoi/enc/qoi_enc";
+import avif_enc from "@/codecs/avif/enc/avif_enc";
 import {
+  AvifEncodeOptions,
   JxlEncodeOptions,
   MozjpegEncodeOptions,
   OxipngEncodeOptions,
   QoiEncodeOptions,
   WebpEncodeOptions,
 } from "./defaultOptions";
+import { toBlob } from "./convertUtils";
+import { Buffer } from "buffer";
 
 export type AnyEncodeOption =
+  | AvifEncodeOptions
   | WebpEncodeOptions
   | JxlEncodeOptions
   | OxipngEncodeOptions
@@ -27,6 +32,17 @@ const encodeImage = async (
 ) => {
   try {
     switch (targetFormat) {
+      case "avif": {
+        const avifModule = await avif_enc();
+        const imgBuffer = Buffer.from(input.data);
+        const result = avifModule.encode(
+          imgBuffer,
+          input.width,
+          input.height,
+          options as AvifEncodeOptions,
+        );
+        return toBlob(result, "avif");
+      }
       case "jxl": {
         const jxlModule = await jxl_enc();
         const result = jxlModule.encode(
@@ -35,7 +51,7 @@ const encodeImage = async (
           input.height,
           options as JxlEncodeOptions,
         );
-        return outputUrl(result, "jpg");
+        return toBlob(result, "jpg");
       }
       case "mozjpeg": {
         const mozjpegModule = await mozjpeg_enc();
@@ -45,7 +61,7 @@ const encodeImage = async (
           input.height,
           options as MozjpegEncodeOptions,
         );
-        return outputUrl(result, "jpg");
+        return toBlob(result, "jpg");
       }
       case "webp": {
         const webpModule = await webp_enc();
@@ -55,7 +71,7 @@ const encodeImage = async (
           input.height,
           options as WebpEncodeOptions,
         );
-        return outputUrl(result, "webp");
+        return toBlob(result, "webp");
       }
       case "oxipng": {
         await oxipng_enc();
@@ -67,7 +83,7 @@ const encodeImage = async (
           oxipngOptions.level,
           oxipngOptions.interlace,
         );
-        return outputUrl(result, "png");
+        return toBlob(result, "png");
       }
       case "qoi": {
         const qoiModule = await qoi_enc();
@@ -77,8 +93,7 @@ const encodeImage = async (
           input.height,
           options as QoiEncodeOptions,
         );
-        console.log(result);
-        return outputUrl(result, "qoi");
+        return toBlob(result, "qoi");
       }
       default:
         return new Error("Unknown format");
@@ -86,11 +101,6 @@ const encodeImage = async (
   } catch (e) {
     return e as Error;
   }
-};
-
-export const outputUrl = (data: Uint8Array, format: string) => {
-  const blob = new Blob([data], { type: `image/${format}` });
-  return URL.createObjectURL(blob);
 };
 
 export default encodeImage;

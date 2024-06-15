@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import Resize from "./Resize";
 import Rotate from "./Rotate";
 import OptimizeButton from "./OptimizeButton";
+import Output from "./Output";
 
 const AddImageButton = () => {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ export default function EditBar(): ReactElement {
         <div className="h-16 w-full flex justify-start items-end mx-4 gap-2">
           <Resize />
           <Rotate />
+          <Output />
         </div>
         <OptimizeButton />
       </nav>

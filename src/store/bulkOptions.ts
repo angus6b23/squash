@@ -140,7 +140,8 @@ export const bulkOptionsSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { handleResize, handleRotate } = bulkOptionsSlice.actions;
+export const { handleResize, handleRotate, handleOutputFormat } =
+  bulkOptionsSlice.actions;
 
 export default bulkOptionsSlice.reducer;
 

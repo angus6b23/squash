@@ -1,14 +1,7 @@
-import { File } from "../store/file";
-import { getBlob } from "./convertUtils";
-
-const decodeImage = async (input: File) => {
+const decodeImage = async (input: Blob) => {
   try {
     // Create a new image
-    const imgData = await getBlob(input.url);
-    if (imgData instanceof Error) {
-      throw imgData;
-    }
-    const img = await createImageBitmap(imgData);
+    const img = await createImageBitmap(input);
     // Create a new canvas
     const canvas = new OffscreenCanvas(0, 0);
     const ctx = canvas.getContext("2d") as OffscreenCanvasRenderingContext2D;
@@ -18,7 +11,7 @@ const decodeImage = async (input: File) => {
     return ctx.getImageData(0, 0, img.width, img.height) as ImageData;
   } catch (e) {
     console.log(e);
-    return new Error("Unable to decode image:" + (e as Error).message);
+    return new Error("Unable to decode image: " + (e as Error).message);
   }
 };
 

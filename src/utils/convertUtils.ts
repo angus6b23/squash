@@ -10,3 +10,10 @@ export const getBlob = async (url: string) => {
     return e as Error;
   }
 };
+
+export const toBlob = (
+  data: Uint8Array | Uint8ClampedArray,
+  format?: string,
+) => {
+  return new Blob([data], format ? { type: `image/${format}` } : {});
+};

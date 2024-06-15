@@ -42,7 +42,7 @@ export default function PreviewButton(): ReactElement {
   return (
     <>
       <button
-        className="flex justify-center items-center btn btn-primary absolute right-8 top-20 z-30"
+        className="flex justify-center items-center btn btn-primary w-fit"
         onClick={handlePreview}
       >
         <PiArrowsLeftRight />

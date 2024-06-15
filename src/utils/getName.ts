@@ -1,11 +1,9 @@
 import { File } from "@/store/file";
 
-const getName = async (original: File, newUrl: string) => {
-  const res = await fetch(newUrl);
-  const blob = await res.blob();
+const getName = (original: File, newBlob: Blob) => {
   const tempName = original.name.split(".");
   tempName.pop();
-  tempName.push(blob.type.split("/")[1]);
+  tempName.push(newBlob.type.split("/")[1]);
   return tempName.join(".");
 };
 

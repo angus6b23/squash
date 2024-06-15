@@ -13,49 +13,55 @@ onmessage = async (e) => {
   try {
     const { data } = e;
     const { files, options }: { files: File[]; options: BulkOptions } = data;
+    // Create a zip for storing all the output images
     const zipFile = new JSZip();
+    // Process every items in files
     const itemsArray = await processFiles(files, options);
+    // Add all blobs into the zip
     for (const item of itemsArray) {
-      const res = await fetch(item.url);
-      const blob = await res.blob();
-      zipFile.file(item.name, blob);
+      zipFile.file(item.name, item.blob);
     }
     const zipGen = await zipFile.generateAsync({ type: "blob" });
-    console.log("Finished packing");
-    postMessage(URL.createObjectURL(zipGen));
-
-    // postMessage(URL.createObjectURL(itemsArray));
+    // console.log("Finished packing");
+    postMessage({ type: "success", payload: URL.createObjectURL(zipGen) });
   } catch (e) {
-    console.error(e);
-    postMessage(e);
+    postMessage({ type: "error", payload: e });
   }
 };
 
 const processFiles = async (files: File[], options: BulkOptions) => {
-  const finishedItems: { name: string; url: string }[] = [];
-  for (const file of files) {
-    console.log(`Processing ${file.name}`);
-    const scopeFile = file;
+  const finishedItems: { name: string; blob: Blob }[] = [];
+  for (const [index, file] of files.entries()) {
+    postMessage({
+      type: "info",
+      payload: {
+        current: index,
+        total: files.length,
+      },
+    });
+    const res = await fetch(file.url);
+    let scopeBlob = await res.blob();
     // Resize if enabled
     if (options.resize.enabled) {
-      const newUrl = await resize(scopeFile, options.resize);
-      if (newUrl instanceof Error) {
-        throw newUrl;
+      const newBlob = await resize(scopeBlob, options.resize);
+      if (newBlob instanceof Error) {
+        throw newBlob;
       } else {
-        scopeFile.url = newUrl;
+        scopeBlob = newBlob;
+        console.log(newBlob);
       }
     }
     // Rotate if enabled
     if (options.rotate.enabled) {
-      const newUrl = await rotate(scopeFile, options.rotate);
-      if (newUrl instanceof Error) {
-        throw newUrl;
+      const newBlob = await rotate(scopeBlob, options.rotate);
+      if (newBlob instanceof Error) {
+        throw newBlob;
       } else {
-        scopeFile.url = newUrl;
+        scopeBlob = newBlob;
       }
     }
     // Decode image and output
-    const decoded = await decodeImage(scopeFile);
+    const decoded = await decodeImage(scopeBlob);
     if (decoded instanceof Error) {
       throw decoded;
     } else {
@@ -70,11 +76,15 @@ const processFiles = async (files: File[], options: BulkOptions) => {
         targetOption = options.output.option;
       }
       const encoded = await encodeImage(decoded, targetFormat, targetOption);
-      finishedItems.push({
-        name: await getName(file, encoded as string),
-        url: encoded as string,
-      });
-      console.log(`URL for ${file.name} is ${encoded}`);
+      if (encoded instanceof Error) {
+        postMessage({ type: "error", payload: encoded });
+        continue;
+      }
+      const newItem = {
+        name: getName(file, encoded),
+        blob: encoded,
+      };
+      finishedItems.push(newItem);
     }
   }
   return finishedItems;

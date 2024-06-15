@@ -2,8 +2,7 @@ import { type ReactElement } from "react";
 import FileSelector from "@/components/FileSelector";
 import ImageBrowser from "@/components/ImageBrowser";
 import EditBar from "@/components/EditBar";
-import PreviewButton from "@/components/PreviewButton";
-import TestButton from "@/components/TestButton";
+import EditorButtons from "@/components/EditorButtons";
 
 export interface EditorProps {}
 
@@ -17,9 +16,10 @@ export default function Editor(): ReactElement {
         <section className="col-span-10 h-full overflow-hidden relative">
           <EditBar />
 
-          <PreviewButton />
-          <TestButton />
-          <ImageBrowser />
+          <div className="w-full h-full relative">
+            <ImageBrowser />
+            <EditorButtons />
+          </div>
         </section>
       </main>
     </>

@@ -6,6 +6,12 @@ import {
   defaultOxipngOption,
   defaultWebpOption,
 } from "./defaultOptions";
+
+// Automatically select output format based on file type
+// Output mozjpeg with jpg / gif
+// Optimize with oxipng with pngs files
+// Output webp for other formats
+
 const autoFormat = async (
   file: File,
 ): Promise<{

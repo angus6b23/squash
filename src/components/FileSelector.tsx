@@ -43,9 +43,7 @@ export default function FileSelector(): ReactElement {
             onClick={() => handleFileSelect(file.id)}
           >
             <img src={file.url} className="object-contain w-32 h-28" />
-            <p className="text-center overflow-ellipsis line-clamp-2">
-              {file.name}
-            </p>
+            <p className="text-center line-clamp-2 w-full mt-2">{file.name}</p>
             <button
               onClick={() => handleRemove(file.id)}
               className="btn btn-ghost absolute right-2 top-2 group-hover:visible invisible"
