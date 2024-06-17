@@ -32,7 +32,7 @@ export interface BulkOptions {
     degree: 0 | 90 | 180 | 270;
   };
   output: {
-    format: "avif" | "mozjpeg" | "qoi" | "oxipng" | "jpgxl" | "webp" | "auto";
+    format: "avif" | "mozjpeg" | "qoi" | "oxipng" | "jxl" | "webp" | "auto";
     option: AnyEncodeOption;
   };
 }
@@ -102,11 +102,11 @@ export const bulkOptionsSlice = createSlice({
               option: defaultMozjpegOption,
             },
           };
-        case "jpgxl":
+        case "jxl":
           return {
             ...state,
             output: {
-              format: "jpgxl",
+              format: "jxl",
               option: defaultJxlOption,
             },
           };
@@ -136,12 +136,25 @@ export const bulkOptionsSlice = createSlice({
           };
       }
     },
+    handleOutputOption: (state, action: PayloadAction<AnyEncodeOption>) => {
+      return {
+        ...state,
+        output: {
+          ...state.output,
+          option: action.payload,
+        },
+      };
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { handleResize, handleRotate, handleOutputFormat } =
-  bulkOptionsSlice.actions;
+export const {
+  handleResize,
+  handleRotate,
+  handleOutputFormat,
+  handleOutputOption,
+} = bulkOptionsSlice.actions;
 
 export default bulkOptionsSlice.reducer;
 

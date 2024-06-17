@@ -15,7 +15,6 @@ import {
   WebpEncodeOptions,
 } from "./defaultOptions";
 import { toBlob } from "./convertUtils";
-import { Buffer } from "buffer";
 
 export type AnyEncodeOption =
   | AvifEncodeOptions
@@ -34,9 +33,8 @@ const encodeImage = async (
     switch (targetFormat) {
       case "avif": {
         const avifModule = await avif_enc();
-        const imgBuffer = Buffer.from(input.data);
         const result = avifModule.encode(
-          imgBuffer,
+          input.data,
           input.width,
           input.height,
           options as AvifEncodeOptions,

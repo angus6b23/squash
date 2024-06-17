@@ -1,4 +1,4 @@
-import TestFormatButton from "./ TestFormatButton";
+import TestFormatButton from "./TestFormatButton";
 import PreviewButton from "./PreviewButton";
 
 export default function EditorButtons() {

@@ -1,19 +1,30 @@
 import { EncodeOptions as wrapAvifEncodeOptions } from "@/codecs/avif/enc/avif_enc";
 export type AvifEncodeOptions = wrapAvifEncodeOptions;
 export const defaultAvifOption: AvifEncodeOptions = {
-  quality: 50, // [0 - 100]; 0 = worst quality, 100 = lossless
-  qualityAlpha: -1, // As above, but -1 means 'use quality'
-  denoiseLevel: 0, // 0-50
-  tileRowsLog2: 0,
+  quality: 50,
+  qualityAlpha: -1,
+  denoiseLevel: 0,
   tileColsLog2: 0,
-  // [0 - 6]
-  // Creates 2^n tiles in that dimension
-  speed: 4, // [0 - 10], 0 = slowest, 10 = fastest
-  subsample: 0, // 0 = 4:0:0, 1 = 4:2:0, 2 = 4:2:2, 3 = 4:4:4
+  tileRowsLog2: 0,
+  speed: 6,
+  subsample: 1,
   chromaDeltaQ: false,
-  sharpness: 0, // 0-7
+  sharpness: 0,
+  tune: 0,
   enableSharpYUV: false,
-  tune: 0, // auto, psnr, ssim,
+  // quality: 50, // [0 - 100]; 0 = worst quality, 100 = lossless
+  // qualityAlpha: -1, // As above, but -1 means 'use quality'
+  // denoiseLevel: 0, // 0-50
+  // tileRowsLog2: 0,
+  // tileColsLog2: 0,
+  // // [0 - 6]
+  // // Creates 2^n tiles in that dimension
+  // speed: 6, // [0 - 10], 0 = slowest, 10 = fastest
+  // subsample: 1, // 0 = 4:0:0, 1 = 4:2:0, 2 = 4:2:2, 3 = 4:4:4
+  // chromaDeltaQ: false,
+  // sharpness: 0, // 0-7
+  // enableSharpYUV: false,
+  // tune: 0, // auto, psnr, ssim,
 };
 import { EncodeOptions as wrapWebpEncodeOptions } from "@/codecs/webp/enc/webp_enc";
 export type WebpEncodeOptions = wrapWebpEncodeOptions;
