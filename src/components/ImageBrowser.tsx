@@ -4,6 +4,7 @@ import "./ImageBrowser.css";
 import getCurrentFile from "../utils/getCurrentFile";
 import { useSelector } from "react-redux";
 import { selectCurrentFileId } from "../store/currentFileId";
+import ImageBrowserControl from "./ImageBrowserControls";
 
 export default function ImageBrowser(): ReactElement {
   const currentFileId = useSelector(selectCurrentFileId);
@@ -23,7 +24,8 @@ export default function ImageBrowser(): ReactElement {
         centerZoomedOut={true}
         panning={{ velocityDisabled: true }}
       >
-        <TransformComponent wrapperClass="h-full w-full checkerboard relative">
+        <ImageBrowserControl />
+        <TransformComponent wrapperClass="h-[calc(100vh-64px)] w-full checkerboard relative">
           <img src={currentImage?.url} />
         </TransformComponent>
       </TransformWrapper>

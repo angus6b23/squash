@@ -1,30 +1,69 @@
-# React + TypeScript + Vite
+<div align = center>
+  <img src="https://raw.githubusercontent.com/angus6b23/squash/master/public/icon.svg" width="800" height="300" alt="squash-logo">
+</div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Squash
 
-Currently, two official plugins are available:
+<div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; margin-left: -0.5rem">
+<img alt="GitHub License" src="https://img.shields.io/github/license/angus6b23/squash">
+<img alt="GitHub release (with filter)" src="https://img.shields.io/github/v/release/angus6b23/squash">
+<img alt="Liberapay receiving" src="https://img.shields.io/liberapay/receives/12a.app">
+</div>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+An image optimization tool allows you to compress and covert images in your browser
 
-## Expanding the ESLint configuration
+## Screenshots
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+<div style="display: flex; flex-wrap: wrap; gap: 1rem">
 
-- Configure the top-level `parserOptions` property like this:
+</div>
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Features
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Up-to-date encoders, using encoders provided by [Squoosh](https://github.com/GoogleChromeLabs/squoosh)
+- Secure and private, no images are uploaded to any server
+- Batch optimization, drag multiple images and click Optimize All and all done
+- You don't have to mess with cli or random npm packages
+- Do not collect a five-page long "basic visitor data"
+- Automatically select the best method for you with sane defaults
+
+## Why building another image optimization tool?
+
+I have tried:
+
+- [Squoosh](https://github.com/GoogleChromeLabs/squoosh) - Best of all, but do not support batch optimization and [unlikely to be in near future](https://github.com/GoogleChromeLabs/squoosh/issues/1259)
+- [@squoosh/cli](https://www.npmjs.com/package/@squoosh/cli) - Do not work for me and no longer maintained :(
+- [Caesium Image Compressor](https://caesium.app/) - First option appears on alternative.to, but functionality really limited (5 files a time and do not support converting formats)
+- tinyXXX(Insert image format here) - Those creepy webpages really make me feel reluctant to upload my images to their sites
+
+Good thing is that squoosh is open-sourced and I can build my own version easily
+
+## Building the application by yourself
+
+1. Clone the git repository
+
+   `git clone https://github.com/angus6b23/squash`
+
+2. Run yarn / npm to install dependencies
+
+   Using yarn
+   `yarn`
+
+   Using npm
+   `npm install`
+
+3. Build and package the files
+
+   Using yarn
+   `yarn build`
+
+   Using npm
+   `npn run build`
+
+4. If the build process is successful, the files will be available in "dist" folder
+
+## License
+
+![img](https://www.gnu.org/graphics/agplv3-with-text-162x68.png)
+
+This app is provided under AGPL v3.0 or later. For details, please see <https://www.gnu.org/licenses/agpl-3.0.html>
