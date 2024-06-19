@@ -1,5 +1,5 @@
-export const getFileUrl = (file: File) => {
-  return URL.createObjectURL(file);
+export const getFileDetails = (file: File): [string, number] => {
+  return [URL.createObjectURL(file), file.size];
 };
 
 export const getBlob = async (url: string) => {

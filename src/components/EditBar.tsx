@@ -6,6 +6,7 @@ import Resize from "./Resize";
 import Rotate from "./Rotate";
 import OptimizeButton from "./OptimizeButton";
 import Output from "./Output";
+import { getFileDetails } from "@/utils/convertUtils";
 
 const AddImageButton = () => {
   const dispatch = useDispatch();
@@ -17,10 +18,12 @@ const AddImageButton = () => {
   const handleFileUpload = (e: BaseSyntheticEvent) => {
     Array.from(e.target.files).forEach((file) => {
       const newFile = file as File;
+      const [url, size] = getFileDetails(newFile);
       dispatch(
         addFile({
           name: newFile.name,
-          url: URL.createObjectURL(newFile),
+          url,
+          size,
         }),
       );
     });

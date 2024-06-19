@@ -1,8 +1,14 @@
+import useOptimizeResult from "@/hooks/useOptimizeResults";
+import { addOptimizeSize } from "@/store/file";
 import { workerContext } from "@/store/workerContext";
 import getCurrentFile from "@/utils/getCurrentFile";
+import clsx from "clsx";
 import { useContext, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 function TestFormatButton() {
+  const dispatch = useDispatch();
+  const optimizeResult = useOptimizeResult();
   const { singleWorker } = useContext(workerContext) as {
     singleWorker: Worker;
   };
@@ -10,7 +16,9 @@ function TestFormatButton() {
     const workerListener = (e: MessageEvent) => {
       const { data } = e;
       const { type, payload } = data;
-      console.log(type, payload);
+      if (type !== "error") {
+        dispatch(addOptimizeSize(payload));
+      }
     };
     singleWorker.addEventListener("message", workerListener);
     return () => singleWorker.removeEventListener("message", workerListener);
@@ -25,7 +33,12 @@ function TestFormatButton() {
   };
   return (
     <>
-      <button className="btn btn-primary" onClick={handleClick}>
+      <button
+        className={clsx("btn btn-primary", {
+          hidden: optimizeResult !== undefined,
+        })}
+        onClick={handleClick}
+      >
         Test All format
       </button>
     </>

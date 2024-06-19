@@ -14,6 +14,7 @@ import encodeImage, { AnyEncodeOption } from "@/utils/encodeImage";
 type eventData = {
   file: File;
   format: "avif" | "mozjpeg" | "qoi" | "oxipng" | "jpgxl" | "all";
+  id: string;
   option?: AnyEncodeOption;
 };
 
@@ -28,6 +29,7 @@ onmessage = async (e) => {
 const testAllFormat = async (file: File) => {
   const res = await fetch(file.url);
   const blob = await res.blob();
+  const { id } = file;
   const decoded = await decodeImage(blob);
   if (decoded instanceof Error) {
     postMessage({ type: "error", payload: decoded });
@@ -37,23 +39,23 @@ const testAllFormat = async (file: File) => {
   //   handlePromse(res, "avif"),
   // );
   encodeImage(decoded, "mozjpeg", defaultMozjpegOption).then((res) =>
-    handlePromse(res, "mozjpeg"),
+    handlePromse(res, "mozjpeg", id),
   );
   encodeImage(decoded, "jxl", defaultJxlOption).then((res) =>
-    handlePromse(res, "jpgxl"),
+    handlePromse(res, "jxl", id),
   );
   encodeImage(decoded, "oxipng", defaultOxipngOption).then((res) =>
-    handlePromse(res, "oxipng"),
+    handlePromse(res, "oxipng", id),
   );
   encodeImage(decoded, "qoi", defaultQoiOption).then((res) =>
-    handlePromse(res, "qoi"),
+    handlePromse(res, "qoi", id),
   );
   encodeImage(decoded, "webp", defaultWebpOption).then((res) =>
-    handlePromse(res, "webp"),
+    handlePromse(res, "webp", id),
   );
 };
 
-const handlePromse = (res: Blob | Error, encoder: string) => {
+const handlePromse = (res: Blob | Error, encoder: string, id: string) => {
   if (res instanceof Error) {
     postMessage({ type: "error", payload: res });
     return;
@@ -61,8 +63,9 @@ const handlePromse = (res: Blob | Error, encoder: string) => {
   postMessage({
     type: "info",
     payload: {
-      type: encoder,
+      format: encoder,
       size: res.size,
+      id: id,
     },
   });
 };

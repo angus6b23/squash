@@ -7,11 +7,27 @@ export interface File {
   id: string;
   name: string;
   url: string;
+  size: number;
+  optimizeResult?: {
+    avif?: number | undefined;
+    mozjpeg?: number | undefined;
+    webp?: number | undefined;
+    oxipng?: number | undefined;
+    qoi?: number | undefined;
+    jxl?: number | undefined;
+  };
 }
 
 export interface UploadedFile {
   name: string;
   url: string;
+  size: number;
+}
+
+export interface OptimizeResult {
+  id: string;
+  format: keyof File["optimizeResult"];
+  size: number;
 }
 
 const initialState: File[] = [];
@@ -23,17 +39,35 @@ export const fileSlice = createSlice({
     addFile: (state: File[], action: PayloadAction<UploadedFile>) => {
       return [
         ...state,
-        { name: action.payload.name, id: nanoid(5), url: action.payload.url },
+        {
+          ...action.payload,
+          id: nanoid(5),
+        },
       ];
     },
     removeFile: (state, action: PayloadAction<string>) => {
       return state.filter((file) => file.id !== action.payload);
     },
+    addOptimizeSize: (state, action: PayloadAction<OptimizeResult>) => {
+      return state.map((file) => {
+        if (file.id === action.payload.id) {
+          return {
+            ...file,
+            optimizeResult: {
+              ...file.optimizeResult,
+              [action.payload.format]: action.payload.size,
+            },
+          };
+        } else {
+          return file;
+        }
+      });
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addFile, removeFile } = fileSlice.actions;
+export const { addFile, removeFile, addOptimizeSize } = fileSlice.actions;
 
 export default fileSlice.reducer;
 
