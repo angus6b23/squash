@@ -1,18 +1,27 @@
-import { useEffect, type ReactElement } from "react";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import { useState, type ReactElement } from "react";
+import {
+  ReactZoomPanPinchRef,
+  TransformComponent,
+  TransformWrapper,
+} from "react-zoom-pan-pinch";
 import "./ImageBrowser.css";
-import getCurrentFile from "../utils/getCurrentFile";
-import { useSelector } from "react-redux";
-import { selectCurrentFileId } from "../store/currentFileId";
 import ImageBrowserControl from "./ImageBrowserControls";
+import clsx from "clsx";
+import useCurrentFile from "@/hooks/useCurrentFile";
 
 export default function ImageBrowser(): ReactElement {
-  const currentFileId = useSelector(selectCurrentFileId);
-  let currentImage = getCurrentFile();
+  const currentImage = useCurrentFile();
 
-  useEffect(() => {
-    currentImage = getCurrentFile();
-  }, [currentFileId]);
+  const [showCheckerboard, setShowCheckerboard] = useState(false);
+  const toggleCheckerboard = () => {
+    setShowCheckerboard((prev) => !prev);
+  };
+
+  const focusImage = (_: ReactZoomPanPinchRef, e: MouseEvent | TouchEvent) => {
+    const img = (e.target as Element).querySelector("img") as HTMLImageElement;
+    img.tabIndex = 6;
+    img.focus();
+  };
 
   return (
     <>
@@ -23,10 +32,16 @@ export default function ImageBrowser(): ReactElement {
         centerOnInit={true}
         centerZoomedOut={true}
         panning={{ velocityDisabled: true }}
+        onPanningStart={focusImage}
+        onWheelStart={focusImage}
       >
-        <ImageBrowserControl />
-        <TransformComponent wrapperClass="h-[calc(100vh-64px)] w-full checkerboard relative">
-          <img src={currentImage?.url} />
+        <ImageBrowserControl toggleShowCheckerboard={toggleCheckerboard} />
+        <TransformComponent
+          wrapperClass={clsx("h-[calc(100vh-64px)] w-full relative", {
+            checkerboard: showCheckerboard,
+          })}
+        >
+          <img src={currentImage?.url} tabIndex={5} />
         </TransformComponent>
       </TransformWrapper>
     </>

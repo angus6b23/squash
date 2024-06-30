@@ -82,7 +82,7 @@ function OptionSelectWebp() {
             max={100}
             title="Quality"
           />
-          <details className="collapse collapse-arrow p-0">
+          <details className="collapse collapse-arrow" tabIndex={3}>
             <summary className="collapse-title px-0">Advance Options</summary>
             <div className="collapse-content flex flex-col gap-4 py-2 px-0">
               <CheckboxOption

@@ -16,15 +16,15 @@ export default function Output(): ReactElement {
   return (
     <>
       <div className="dropdown dropdown-hover">
-        <div tabIndex={2} role="button" className="btn h-16 btn-ghost">
+        <div tabIndex={3} role="button" className="btn h-16 btn-ghost">
           <PiFileImage className="text-xl" />
           Format
         </div>
         <div
-          tabIndex={2}
+          tabIndex={3}
           className="dropdown-content z-[1] p-4 bg-base-100 w-80 flex flex-col gap-1 rounded-box max-h-80 overflow-y-auto"
         >
-          <div className="flex justify-between items-center sticky top-0 bg-base-100">
+          <div className="flex justify-between items-center sticky top-0">
             <p>Method</p>
             <select
               className="select select-sm text-left"
@@ -43,17 +43,19 @@ export default function Output(): ReactElement {
               <option value="webp">Webp</option>
             </select>
           </div>
-          {output.format === "mozjpeg" ? (
-            <OptionSelectMozjpeg />
-          ) : output.format === "oxipng" ? (
-            <OptionsSelectOxipng />
-          ) : output.format === "jxl" ? (
-            <OptionsSelectJxl />
-          ) : output.format === "webp" ? (
-            <OptionSelectWebp />
-          ) : (
-            <></>
-          )}
+          <div className="h-full overflow-y-auto pr-[2px]">
+            {output.format === "mozjpeg" ? (
+              <OptionSelectMozjpeg />
+            ) : output.format === "oxipng" ? (
+              <OptionsSelectOxipng />
+            ) : output.format === "jxl" ? (
+              <OptionsSelectJxl />
+            ) : output.format === "webp" ? (
+              <OptionSelectWebp />
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </div>
     </>

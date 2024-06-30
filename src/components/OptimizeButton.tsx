@@ -3,6 +3,7 @@ import { selectFiles } from "@/store/file";
 import { workerContext } from "@/store/workerContext";
 import saveAs from "@/utils/saveAs";
 import { ReactNode, useContext, useEffect, useRef, useState } from "react";
+import { PiImage } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { Id, toast } from "react-toastify";
 
@@ -67,7 +68,8 @@ const OptimizeButton = (): ReactNode => {
       onClick={handleOptimize}
       disabled={disabled}
     >
-      Optimize All
+      <PiImage className="text-xl" />
+      <p>Optimize All</p>
     </button>
   );
 };

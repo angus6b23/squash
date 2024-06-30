@@ -1,22 +1,32 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
 
 export const workerContext = createContext<{
-  singleWorker: Worker | null;
+  testFormatWorker: Worker | null;
   bulkWorker: Worker | null;
+  singleWorker: Worker | null;
 } | null>(null);
 
 export const WorkerProvider = ({ children }: { children: ReactNode }) => {
-  const [singleWorker, setSingleWorker] = useState<Worker | null>(null);
+  const [testFormatWorker, setTestFormatWorker] = useState<Worker | null>(null);
   const [bulkWorker, setBulkWorker] = useState<Worker | null>(null);
+  const [singleWorker, setSingleWorker] = useState<Worker | null>(null);
 
   useEffect(() => {
-    setSingleWorker(() => {
-      return new Worker(new URL("@/workers/single-worker", import.meta.url), {
-        type: "module",
-      });
+    setTestFormatWorker(() => {
+      return new Worker(
+        new URL("@/workers/testFormat-worker", import.meta.url),
+        {
+          type: "module",
+        },
+      );
     });
     setBulkWorker(() => {
       return new Worker(new URL("@/workers/bulk-worker", import.meta.url), {
+        type: "module",
+      });
+    });
+    setSingleWorker(() => {
+      return new Worker(new URL("@/workers/single-worker", import.meta.url), {
         type: "module",
       });
     });
@@ -24,7 +34,7 @@ export const WorkerProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <workerContext.Provider
-      value={{ singleWorker: singleWorker, bulkWorker: bulkWorker }}
+      value={{ testFormatWorker, bulkWorker, singleWorker }}
     >
       {children}
     </workerContext.Provider>

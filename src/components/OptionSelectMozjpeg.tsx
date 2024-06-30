@@ -21,7 +21,7 @@ function OptionSelectMozjpeg() {
     } else {
       newOption = {
         ...option,
-        [name]: value,
+        [name]: Number(value),
       };
     }
     dispatch(handleOutputOption(newOption));

@@ -17,12 +17,12 @@ export default function Rotate(): ReactElement {
   return (
     <>
       <div className="dropdown dropdown-hover">
-        <div tabIndex={0} role="button" className="btn h-16 btn-ghost">
+        <div tabIndex={2} role="button" className="btn h-16 btn-ghost">
           <PiArrowClockwise className="text-xl" />
           Rotate
         </div>
         <div
-          tabIndex={0}
+          tabIndex={2}
           className="dropdown-content z-[1] p-4 bg-base-100 w-64 flex flex-col gap-1 rounded-box"
         >
           <div className="flex justify-between items-center mb-2 pb-2 border-b-neutral border-b-[1px]">

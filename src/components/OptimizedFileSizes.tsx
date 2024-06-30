@@ -40,9 +40,9 @@ export default function OptimizedFileSizes() {
   return (
     <>
       {currentFile && optimizeResult !== undefined && (
-        <div className="flex flex-col gap-4 w-64 bg-base-100 rounded-md p-4">
-          <h5 className="text-lg">Optimized Files Sizes:</h5>
-          <div className="grid grid-cols-3 gap-y-2 w-full">
+        <details className="collapse collapse-arrow bg-base-100 !w-72" open>
+          <summary className="collapse-title">Optimized Files Sizes:</summary>
+          <div className="collapse-content grid grid-cols-3 gap-y-2 w-full">
             <p>Original:</p>
             <p className="col-span-2">{prettyBytes(currentFile.size)}</p>
             <p>AVIF:</p>
@@ -100,7 +100,7 @@ export default function OptimizedFileSizes() {
               <PiCircleNotch className="animate-spin col-span-2" />
             )}
           </div>
-        </div>
+        </details>
       )}
     </>
   );

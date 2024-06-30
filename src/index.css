@@ -10,4 +10,12 @@
     margin: 0;
     -moz-appearance: textfield !important;
   }
+
+  ::-webkit-scrollbar {
+    background: transparent;
+    width: 2px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(var(--bc));
+  }
 }

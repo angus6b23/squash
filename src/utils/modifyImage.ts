@@ -54,7 +54,7 @@ export const resize = async (input: Blob, options: BulkOptions["resize"]) => {
       targetMethod = options.method;
     }
     await resizeInit();
-    console.log(new Uint8Array(decoded.data.buffer));
+    // console.log(new Uint8Array(decoded.data.buffer));
     const result = resizeWasm(
       new Uint8Array(decoded.data.buffer),
       img.width,

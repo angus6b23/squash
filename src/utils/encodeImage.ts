@@ -1,11 +1,4 @@
-import webp_enc from "@/codecs/webp/enc/webp_enc";
-import jxl_enc from "@/codecs/jxl/enc/jxl_enc";
-import oxipng_enc, {
-  optimise as oxipngOptimize,
-} from "@/codecs/oxipng/pkg/squoosh_oxipng";
-import mozjpeg_enc from "@/codecs/mozjpeg/enc/mozjpeg_enc";
-import qoi_enc from "@/codecs/qoi/enc/qoi_enc";
-import avif_enc from "@/codecs/avif/enc/avif_enc";
+import { optimise as oxipngOptimize } from "@/codecs/oxipng/pkg/squoosh_oxipng";
 import {
   AvifEncodeOptions,
   JxlEncodeOptions,
@@ -15,6 +8,7 @@ import {
   WebpEncodeOptions,
 } from "./defaultOptions";
 import { toBlob } from "./convertUtils";
+import { getEncodeModules } from "./workerUtils";
 
 export type AnyEncodeOption =
   | AvifEncodeOptions
@@ -32,7 +26,7 @@ const encodeImage = async (
   try {
     switch (targetFormat) {
       case "avif": {
-        const avifModule = await avif_enc();
+        const avifModule = await getEncodeModules(targetFormat);
         const result = avifModule.encode(
           input.data,
           input.width,
@@ -42,7 +36,7 @@ const encodeImage = async (
         return toBlob(result, "avif");
       }
       case "jxl": {
-        const jxlModule = await jxl_enc();
+        const jxlModule = await getEncodeModules(targetFormat);
         const result = jxlModule.encode(
           input.data,
           input.width,
@@ -52,7 +46,7 @@ const encodeImage = async (
         return toBlob(result, "jpg");
       }
       case "mozjpeg": {
-        const mozjpegModule = await mozjpeg_enc();
+        const mozjpegModule = await getEncodeModules(targetFormat);
         const result = mozjpegModule.encode(
           input.data,
           input.width,
@@ -62,7 +56,7 @@ const encodeImage = async (
         return toBlob(result, "jpg");
       }
       case "webp": {
-        const webpModule = await webp_enc();
+        const webpModule = await getEncodeModules(targetFormat);
         const result = webpModule.encode(
           input.data,
           input.width,
@@ -72,9 +66,9 @@ const encodeImage = async (
         return toBlob(result, "webp");
       }
       case "oxipng": {
-        await oxipng_enc();
+        const oxipngModule = await getEncodeModules(targetFormat);
         const oxipngOptions = options as OxipngEncodeOptions;
-        const result = oxipngOptimize(
+        const result = oxipngModule.optimize(
           input.data,
           input.width,
           input.height,
@@ -84,7 +78,7 @@ const encodeImage = async (
         return toBlob(result, "png");
       }
       case "qoi": {
-        const qoiModule = await qoi_enc();
+        const qoiModule = await getEncodeModules(targetFormat);
         const result = qoiModule.encode(
           input.data,
           input.width,

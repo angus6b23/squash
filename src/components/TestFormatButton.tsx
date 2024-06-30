@@ -4,14 +4,17 @@ import { workerContext } from "@/store/workerContext";
 import getCurrentFile from "@/utils/getCurrentFile";
 import clsx from "clsx";
 import { useContext, useEffect } from "react";
+import { PiFlask } from "react-icons/pi";
 import { useDispatch } from "react-redux";
 
 function TestFormatButton() {
   const dispatch = useDispatch();
   const optimizeResult = useOptimizeResult();
-  const { singleWorker } = useContext(workerContext) as {
-    singleWorker: Worker;
+
+  const { testFormatWorker } = useContext(workerContext) as {
+    testFormatWorker: Worker;
   };
+
   useEffect(() => {
     const workerListener = (e: MessageEvent) => {
       const { data } = e;
@@ -20,26 +23,32 @@ function TestFormatButton() {
         dispatch(addOptimizeSize(payload));
       }
     };
-    singleWorker.addEventListener("message", workerListener);
-    return () => singleWorker.removeEventListener("message", workerListener);
-  }, [singleWorker]);
+    testFormatWorker.addEventListener("message", workerListener);
+    return () =>
+      testFormatWorker.removeEventListener("message", workerListener);
+  }, [testFormatWorker]);
 
   const handleClick = () => {
     const file = getCurrentFile();
-    singleWorker.postMessage({
+    testFormatWorker.postMessage({
       format: "all",
       file: file,
     });
   };
+
   return (
     <>
       <button
-        className={clsx("btn btn-primary", {
-          hidden: optimizeResult !== undefined,
-        })}
+        className={clsx(
+          "btn btn-primary flex gap-2 items-center justify-center",
+          {
+            hidden: optimizeResult !== undefined,
+          },
+        )}
         onClick={handleClick}
       >
-        Test All format
+        <PiFlask className="text-lg" />
+        <p>Test All format</p>
       </button>
     </>
   );

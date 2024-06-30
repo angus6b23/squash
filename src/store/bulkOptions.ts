@@ -18,7 +18,7 @@ enum resizeMethod {
   Lancozs3,
   default,
 }
-export interface BulkOptions {
+export interface TransformOption {
   resize: {
     enabled: boolean;
     keepRatio: boolean;
@@ -37,7 +37,7 @@ export interface BulkOptions {
   };
 }
 
-const initialState: BulkOptions = {
+const initialState: TransformOption = {
   resize: {
     enabled: false,
     keepRatio: true,
@@ -60,13 +60,13 @@ export const bulkOptionsSlice = createSlice({
   name: "bulkOptions",
   initialState,
   reducers: {
-    handleResize: (state, action: PayloadAction<BulkOptions["resize"]>) => {
+    handleResize: (state, action: PayloadAction<TransformOption["resize"]>) => {
       return {
         ...state,
         resize: action.payload,
       };
     },
-    handleRotate: (state, action: PayloadAction<BulkOptions["rotate"]>) => {
+    handleRotate: (state, action: PayloadAction<TransformOption["rotate"]>) => {
       return {
         ...state,
         rotate: action.payload,
@@ -74,7 +74,7 @@ export const bulkOptionsSlice = createSlice({
     },
     handleOutputFormat: (
       state,
-      action: PayloadAction<BulkOptions["output"]["format"]>,
+      action: PayloadAction<TransformOption["output"]["format"]>,
     ) => {
       switch (action.payload) {
         case "auto": {

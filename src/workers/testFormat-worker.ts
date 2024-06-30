@@ -3,6 +3,7 @@
 import { File } from "@/store/file";
 import decodeImage from "@/utils/decodeImage";
 import {
+  defaultAvifOption,
   defaultJxlOption,
   defaultMozjpegOption,
   defaultOxipngOption,
@@ -13,16 +14,17 @@ import encodeImage, { AnyEncodeOption } from "@/utils/encodeImage";
 
 type eventData = {
   file: File;
-  format: "avif" | "mozjpeg" | "qoi" | "oxipng" | "jpgxl" | "all";
   id: string;
   option?: AnyEncodeOption;
 };
 
 onmessage = async (e) => {
-  const { data }: { data: eventData } = e;
-  const { file, format } = data;
-  if (format === "all") {
+  try {
+    const { data }: { data: eventData } = e;
+    const { file } = data;
     testAllFormat(file);
+  } catch (e) {
+    postMessage({ type: "error", payload: e });
   }
 };
 
@@ -35,9 +37,9 @@ const testAllFormat = async (file: File) => {
     postMessage({ type: "error", payload: decoded });
     return;
   }
-  // encodeImage(decoded, "avif", defaultAvifOption).then((res) =>
-  //   handlePromse(res, "avif"),
-  // );
+  encodeImage(decoded, "avif", defaultAvifOption).then((res) =>
+    handlePromse(res, "avif", id),
+  );
   encodeImage(decoded, "mozjpeg", defaultMozjpegOption).then((res) =>
     handlePromse(res, "mozjpeg", id),
   );

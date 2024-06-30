@@ -48,7 +48,7 @@ const processFiles = async (files: File[], options: BulkOptions) => {
         throw newBlob;
       } else {
         scopeBlob = newBlob;
-        console.log(newBlob);
+        // console.log(newBlob);
       }
     }
     // Rotate if enabled
