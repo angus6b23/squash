@@ -1,4 +1,3 @@
-import { optimise as oxipngOptimize } from "@/codecs/oxipng/pkg/squoosh_oxipng";
 import {
   AvifEncodeOptions,
   JxlEncodeOptions,
@@ -68,7 +67,7 @@ const encodeImage = async (
       case "oxipng": {
         const oxipngModule = await getEncodeModules(targetFormat);
         const oxipngOptions = options as OxipngEncodeOptions;
-        const result = oxipngModule.optimize(
+        const result = oxipngModule(
           input.data,
           input.width,
           input.height,

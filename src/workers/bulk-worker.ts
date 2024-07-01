@@ -1,18 +1,16 @@
 // Worker for handling bulk convert / optimize
 
-import { BulkOptions } from "@/store/bulkOptions";
+import { TransformOption } from "@/store/bulkOptions";
 import { File } from "@/store/file";
-import autoFormat from "@/utils/autoFormat";
-import decodeImage from "@/utils/decodeImage";
-import encodeImage from "@/utils/encodeImage";
 import getName from "@/utils/getName";
-import { resize, rotate } from "@/utils/modifyImage";
+import { processImage } from "@/utils/workerUtils";
 import JSZip from "jszip";
 
 onmessage = async (e) => {
   try {
     const { data } = e;
-    const { files, options }: { files: File[]; options: BulkOptions } = data;
+    const { files, options }: { files: File[]; options: TransformOption } =
+      data;
     // Create a zip for storing all the output images
     const zipFile = new JSZip();
     // Process every items in files
@@ -29,9 +27,10 @@ onmessage = async (e) => {
   }
 };
 
-const processFiles = async (files: File[], options: BulkOptions) => {
+const processFiles = async (files: File[], options: TransformOption) => {
   const finishedItems: { name: string; blob: Blob }[] = [];
   for (const [index, file] of files.entries()) {
+    // Post message to renderer to show progress
     postMessage({
       type: "info",
       payload: {
@@ -39,53 +38,16 @@ const processFiles = async (files: File[], options: BulkOptions) => {
         total: files.length,
       },
     });
-    const res = await fetch(file.url);
-    let scopeBlob = await res.blob();
-    // Resize if enabled
-    if (options.resize.enabled) {
-      const newBlob = await resize(scopeBlob, options.resize);
-      if (newBlob instanceof Error) {
-        throw newBlob;
-      } else {
-        scopeBlob = newBlob;
-        // console.log(newBlob);
-      }
+    const encoded = await processImage(file, options);
+    if (encoded instanceof Error) {
+      postMessage({ type: "error", payload: encoded });
+      continue;
     }
-    // Rotate if enabled
-    if (options.rotate.enabled) {
-      const newBlob = await rotate(scopeBlob, options.rotate);
-      if (newBlob instanceof Error) {
-        throw newBlob;
-      } else {
-        scopeBlob = newBlob;
-      }
-    }
-    // Decode image and output
-    const decoded = await decodeImage(scopeBlob);
-    if (decoded instanceof Error) {
-      throw decoded;
-    } else {
-      let targetFormat;
-      let targetOption;
-      if (options.output.format === "auto") {
-        const res = await autoFormat(file);
-        targetFormat = res.format;
-        targetOption = res.option;
-      } else {
-        targetFormat = options.output.format;
-        targetOption = options.output.option;
-      }
-      const encoded = await encodeImage(decoded, targetFormat, targetOption);
-      if (encoded instanceof Error) {
-        postMessage({ type: "error", payload: encoded });
-        continue;
-      }
-      const newItem = {
-        name: getName(file, encoded),
-        blob: encoded,
-      };
-      finishedItems.push(newItem);
-    }
+    const newItem = {
+      name: getName(file, encoded),
+      blob: encoded,
+    };
+    finishedItems.push(newItem);
   }
   return finishedItems;
 };

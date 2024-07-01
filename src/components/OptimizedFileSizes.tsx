@@ -3,7 +3,7 @@ import useOptimizeResult from "@/hooks/useOptimizeResults";
 import prettyBytes from "pretty-bytes";
 import { PiArrowDown, PiArrowUp, PiCircleNotch } from "react-icons/pi";
 
-const calculatePercentDiff = (optimized: number, original: number) => {
+export const calculatePercentDiff = (optimized: number, original: number) => {
   const diff = ((optimized - original) / original) * 100;
   return Math.abs(diff).toFixed(0) + "%";
 };
@@ -45,15 +45,15 @@ export default function OptimizedFileSizes() {
           <div className="collapse-content grid grid-cols-3 gap-y-2 w-full">
             <p>Original:</p>
             <p className="col-span-2">{prettyBytes(currentFile.size)}</p>
-            <p>AVIF:</p>
-            {optimizeResult.avif ? (
-              <OptimizedResult
-                originalSize={currentFile.size}
-                newSize={optimizeResult.avif}
-              />
-            ) : (
-              <PiCircleNotch className="animate-spin col-span-2" />
-            )}
+            {/* <p>AVIF:</p> */}
+            {/* {optimizeResult.avif ? ( */}
+            {/*   <OptimizedResult */}
+            {/*     originalSize={currentFile.size} */}
+            {/*     newSize={optimizeResult.avif} */}
+            {/*   /> */}
+            {/* ) : ( */}
+            {/*   <PiCircleNotch className="animate-spin col-span-2" /> */}
+            {/* )} */}
             <p>Jxl:</p>
             {optimizeResult.jxl ? (
               <OptimizedResult

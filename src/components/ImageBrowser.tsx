@@ -1,26 +1,14 @@
 import { useState, type ReactElement } from "react";
-import {
-  ReactZoomPanPinchRef,
-  TransformComponent,
-  TransformWrapper,
-} from "react-zoom-pan-pinch";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import "./ImageBrowser.css";
 import ImageBrowserControl from "./ImageBrowserControls";
 import clsx from "clsx";
-import useCurrentFile from "@/hooks/useCurrentFile";
+import ImageDiff from "./ImageDiff";
 
 export default function ImageBrowser(): ReactElement {
-  const currentImage = useCurrentFile();
-
   const [showCheckerboard, setShowCheckerboard] = useState(false);
   const toggleCheckerboard = () => {
     setShowCheckerboard((prev) => !prev);
-  };
-
-  const focusImage = (_: ReactZoomPanPinchRef, e: MouseEvent | TouchEvent) => {
-    const img = (e.target as Element).querySelector("img") as HTMLImageElement;
-    img.tabIndex = 6;
-    img.focus();
   };
 
   return (
@@ -31,9 +19,7 @@ export default function ImageBrowser(): ReactElement {
         wheel={{ step: 0.5 }}
         centerOnInit={true}
         centerZoomedOut={true}
-        panning={{ velocityDisabled: true }}
-        onPanningStart={focusImage}
-        onWheelStart={focusImage}
+        panning={{ velocityDisabled: true, excluded: ["panningDisabled"] }}
       >
         <ImageBrowserControl toggleShowCheckerboard={toggleCheckerboard} />
         <TransformComponent
@@ -41,7 +27,7 @@ export default function ImageBrowser(): ReactElement {
             checkerboard: showCheckerboard,
           })}
         >
-          <img src={currentImage?.url} tabIndex={5} />
+          <ImageDiff />
         </TransformComponent>
       </TransformWrapper>
     </>

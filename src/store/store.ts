@@ -3,6 +3,7 @@ import counterReducer from "@/store/counter";
 import fileReducer from "@/store/file";
 import currentFileReducer from "@/store/currentFileId";
 import bulkOptionsReducer from "@/store/bulkOptions";
+import outputStateReducer from "@/store/outputState";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     files: fileReducer,
     currentFileId: currentFileReducer,
     bulkOptions: bulkOptionsReducer,
+    outputState: outputStateReducer,
   },
 });
 

@@ -3,7 +3,7 @@ import FileSelector from "@/components/FileSelector";
 import ImageBrowser from "@/components/ImageBrowser";
 import EditBar from "@/components/EditBar";
 import EditorButtons from "@/components/EditorButtons";
-import FileInfo from "@/components/FileInfo";
+import InputOutputInfo from "@/components/InputOutputInfo";
 
 export interface EditorProps {}
 
@@ -18,7 +18,7 @@ export default function Editor(): ReactElement {
           <EditBar />
           <div className="w-full h-full relative" tabIndex={4}>
             <ImageBrowser />
-            <FileInfo />
+            <InputOutputInfo />
             <EditorButtons />
           </div>
         </section>
