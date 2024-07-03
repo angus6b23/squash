@@ -10,6 +10,7 @@
 </div>
 
 An image optimization tool allows you to compress and covert images in your browser
+
 [Live Site](https://squash.12a.app)
 
 ## Screenshots
@@ -40,6 +41,10 @@ I have tried:
 - tinyXXX(Insert image format here) - Those creepy webpages really make me feel reluctant to upload my images to their sites
 
 Good thing is that squoosh is open-sourced and I can build my own version easily
+
+## Known issues
+
+- Browsers with dynamic import or canvas disabled (E.g. librewolf) will not work
 
 ## Building the application by yourself
 
