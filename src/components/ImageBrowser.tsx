@@ -23,6 +23,11 @@ export default function ImageBrowser(): ReactElement {
       >
         <ImageBrowserControl toggleShowCheckerboard={toggleCheckerboard} />
         <TransformComponent
+          wrapperStyle={{
+            height: "100%",
+            width: "100%",
+            position: "relative",
+          }}
           wrapperClass={clsx("h-[calc(100vh-64px)] w-full relative", {
             checkerboard: showCheckerboard,
           })}
