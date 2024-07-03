@@ -16,9 +16,9 @@ const AddImageButton = () => {
     fileRef.current?.click();
   };
   const handleFileUpload = (e: BaseSyntheticEvent) => {
-    Array.from(e.target.files).forEach((file) => {
+    Array.from(e.target.files).forEach(async (file) => {
       const newFile = file as File;
-      const [url, size] = getFileDetails(newFile);
+      const [url, size] = await getFileDetails(newFile);
       dispatch(
         addFile({
           name: newFile.name,

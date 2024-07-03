@@ -1,4 +1,7 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
+import TestFormatWorker from "@/workers/testFormat-worker?worker";
+import SingleWorker from "@/workers/single-worker?worker";
+import BatchWorker from "@/workers/bulk-worker?worker";
 
 export const workerContext = createContext<{
   testFormatWorker: Worker | null;
@@ -13,22 +16,13 @@ export const WorkerProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     setTestFormatWorker(() => {
-      return new Worker(
-        new URL("@/workers/testFormat-worker", import.meta.url),
-        {
-          type: "module",
-        },
-      );
+      return new TestFormatWorker();
     });
     setBulkWorker(() => {
-      return new Worker(new URL("@/workers/bulk-worker", import.meta.url), {
-        type: "module",
-      });
+      return new BatchWorker();
     });
     setSingleWorker(() => {
-      return new Worker(new URL("@/workers/single-worker", import.meta.url), {
-        type: "module",
-      });
+      return new SingleWorker();
     });
   }, []);
 

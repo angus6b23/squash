@@ -42,7 +42,7 @@ const encodeImage = async (
           input.height,
           options as JxlEncodeOptions,
         );
-        return toBlob(result, "jpg");
+        return toBlob(result, "jxl");
       }
       case "mozjpeg": {
         const mozjpegModule = await getEncodeModules(targetFormat);
@@ -52,7 +52,7 @@ const encodeImage = async (
           input.height,
           options as MozjpegEncodeOptions,
         );
-        return toBlob(result, "jpg");
+        return toBlob(result, "jpeg");
       }
       case "webp": {
         const webpModule = await getEncodeModules(targetFormat);

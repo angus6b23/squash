@@ -1,5 +1,26 @@
-export const getFileDetails = (file: File): [string, number] => {
-  return [URL.createObjectURL(file), file.size];
+import decodeImage from "./decodeImage";
+
+export const getFileDetails = async (file: File): Promise<[string, number]> => {
+  // Convert image into browser viewable format
+  if (
+    // Omit these file formats (should be supported already)
+
+    file.type?.toLowerCase().includes("avif") ||
+    file.type?.toLowerCase().includes("jxl") ||
+    file.type?.toLowerCase().includes("gif") ||
+    file.type?.toLowerCase().includes("qoi")
+  ) {
+    const imageData = await decodeImage(file);
+    if (imageData instanceof Error) {
+      throw new Error("Unable to decode image");
+    }
+    const canvas = new OffscreenCanvas(imageData.width, imageData.height);
+    canvas.getContext("2d")?.putImageData(imageData, 0, 0);
+    const url = URL.createObjectURL(await canvas.convertToBlob());
+    return [url, file.size];
+  } else {
+    return [URL.createObjectURL(file), file.size];
+  }
 };
 
 export const getBlob = async (url: string) => {

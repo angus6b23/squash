@@ -39,8 +39,8 @@ export default function OptimizedFileSizes() {
   const optimizeResult = useOptimizeResult();
   return (
     <>
-      {currentFile && optimizeResult !== undefined && (
-        <details className="collapse collapse-arrow bg-base-100 !w-72" open>
+      {currentFile && (
+        <details className="collapse collapse-arrow bg-base-200 !w-72" open>
           <summary className="collapse-title">Optimized Files Sizes:</summary>
           <div className="collapse-content grid grid-cols-3 gap-y-2 w-full">
             <p>Original:</p>
@@ -55,7 +55,7 @@ export default function OptimizedFileSizes() {
             {/*   <PiCircleNotch className="animate-spin col-span-2" /> */}
             {/* )} */}
             <p>Jxl:</p>
-            {optimizeResult.jxl ? (
+            {optimizeResult?.jxl ? (
               <OptimizedResult
                 originalSize={currentFile.size}
                 newSize={optimizeResult.jxl}
@@ -64,7 +64,7 @@ export default function OptimizedFileSizes() {
               <PiCircleNotch className="animate-spin col-span-2" />
             )}
             <p>Mozjpeg:</p>
-            {optimizeResult.mozjpeg ? (
+            {optimizeResult?.mozjpeg ? (
               <OptimizedResult
                 originalSize={currentFile.size}
                 newSize={optimizeResult.mozjpeg}
@@ -73,7 +73,7 @@ export default function OptimizedFileSizes() {
               <PiCircleNotch className="animate-spin col-span-2" />
             )}
             <p>Oxipng:</p>
-            {optimizeResult.oxipng ? (
+            {optimizeResult?.oxipng ? (
               <OptimizedResult
                 originalSize={currentFile.size}
                 newSize={optimizeResult.oxipng}
@@ -82,7 +82,7 @@ export default function OptimizedFileSizes() {
               <PiCircleNotch className="animate-spin col-span-2" />
             )}
             <p>Qoi:</p>
-            {optimizeResult.qoi ? (
+            {optimizeResult?.qoi ? (
               <OptimizedResult
                 originalSize={currentFile.size}
                 newSize={optimizeResult.qoi}
@@ -91,7 +91,7 @@ export default function OptimizedFileSizes() {
               <PiCircleNotch className="animate-spin col-span-2" />
             )}
             <p>Webp:</p>
-            {optimizeResult.webp ? (
+            {optimizeResult?.webp ? (
               <OptimizedResult
                 originalSize={currentFile.size}
                 newSize={optimizeResult.webp}

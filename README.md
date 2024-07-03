@@ -6,7 +6,6 @@
 
 <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; margin-left: -0.5rem">
 <img alt="GitHub License" src="https://img.shields.io/github/license/angus6b23/squash">
-<img alt="GitHub release (with filter)" src="https://img.shields.io/github/v/release/angus6b23/squash">
 <img alt="Liberapay receiving" src="https://img.shields.io/liberapay/receives/12a.app">
 </div>
 
@@ -15,14 +14,17 @@ An image optimization tool allows you to compress and covert images in your brow
 ## Screenshots
 
 <div style="display: flex; flex-wrap: wrap; gap: 1rem">
-
+<img src="https://raw.githubusercontent.com/angus6b23/squash/master/public/screenshot_0.jpeg" width="240" height="135" alt="kiku-screenshot" />
+<img src="https://raw.githubusercontent.com/angus6b23/squash/master/public/screenshot_1.jpeg" width="240" height="135" alt="kiku-screenshot" />
 </div>
 
 ## Features
 
 - Up-to-date encoders, using encoders provided by [Squoosh](https://github.com/GoogleChromeLabs/squoosh)
 - Secure and private, no images are uploaded to any server
+- No file sizes or count limit forever
 - Batch optimization, drag multiple images and click Optimize All and all done
+- No installation required
 - You don't have to mess with cli or random npm packages
 - Do not collect a five-page long "basic visitor data"
 - Automatically select the best method for you with sane defaults

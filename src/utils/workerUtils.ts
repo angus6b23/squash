@@ -9,8 +9,14 @@ import { getCache, setCache } from "./tranformCache";
 
 export const encodeModules = new Map();
 
-const hasSimd = await simd();
-const hasThreads = await threads();
+let hasSimd: boolean | undefined;
+let hasThreads: boolean | undefined;
+simd().then((res: boolean) => {
+  hasSimd = res;
+});
+threads().then((res: boolean) => {
+  hasThreads = res;
+});
 
 export const getEncodeModules = async (
   name: TransformOption["output"]["format"],
@@ -78,7 +84,7 @@ export const getEncodeModules = async (
   }
 };
 
-const initModule = async (module: any) => {
+export const initModule = async (module: any) => {
   return await module.default({
     noInitialRun: true,
   });

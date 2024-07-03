@@ -1,4 +1,4 @@
-import { getDimension, toDataURI } from "./svg";
+import { getDecodeModules } from "./decodeModules";
 
 const decodeImage = async (input: Blob) => {
   try {
@@ -7,14 +7,18 @@ const decodeImage = async (input: Blob) => {
     const ctx = canvas.getContext("2d") as OffscreenCanvasRenderingContext2D;
 
     let img;
-    if (input.type.includes("svg")) {
-      img = (await input.text()) as unknown as SVGGraphicsElement;
-      const svgImage = new Image();
-      const [svgWidth, svgHeight] = await getDimension(input);
-      svgImage.height = svgHeight;
-      svgImage.width = svgWidth;
-      svgImage.src = toDataURI(input);
-      [canvas.width, canvas.height] = [svgWidth, svgHeight];
+    if (input.type.toLowerCase().includes("jxl")) {
+      const jxlModule = await getDecodeModules("jxl");
+      const decoded = jxlModule.decode(await input.arrayBuffer());
+      return decoded as ImageData;
+    } else if (input.type.toLowerCase().includes("avif")) {
+      const avifModule = await getDecodeModules("avif");
+      const decoded = avifModule.decode(await input.arrayBuffer());
+      return decoded as ImageData;
+    } else if (input.type.toLowerCase().includes("qoi")) {
+      const qoiModule = await getDecodeModules("qoi");
+      const decoded = qoiModule.decode(await input.arrayBuffer());
+      return decoded as ImageData;
     } else {
       img = await createImageBitmap(input);
       // Set the width and height of canvas same as the image
@@ -26,6 +30,12 @@ const decodeImage = async (input: Blob) => {
     console.log(e);
     return new Error("Unable to decode image: " + (e as Error).message);
   }
+};
+
+export const decodeFromUrl = async (url: string) => {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  return await decodeImage(blob);
 };
 
 export default decodeImage;

@@ -1,4 +1,4 @@
-import { BulkOptions } from "@/store/bulkOptions";
+import { TransformOption } from "@/store/bulkOptions";
 import { File } from "@/store/file";
 import { AnyEncodeOption } from "./encodeImage";
 import {
@@ -15,7 +15,7 @@ import {
 const autoFormat = async (
   file: File,
 ): Promise<{
-  format: BulkOptions["output"]["format"];
+  format: TransformOption["output"]["format"];
   option: AnyEncodeOption;
 }> => {
   const res = await fetch(file.url);

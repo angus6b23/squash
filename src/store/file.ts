@@ -7,6 +7,7 @@ export interface File {
   id: string;
   name: string;
   url: string;
+  previewClicked: boolean;
   size: number;
   optimizeResult?: {
     avif?: number | undefined;
@@ -42,6 +43,7 @@ export const fileSlice = createSlice({
         {
           ...action.payload,
           id: nanoid(5),
+          previewClicked: false,
         },
       ];
     },
@@ -63,11 +65,24 @@ export const fileSlice = createSlice({
         }
       });
     },
+    handlePreviewClicked: (state, action: PayloadAction<string>) => {
+      return state.map((file) => {
+        if (file.id === action.payload) {
+          return {
+            ...file,
+            previewClicked: true,
+          };
+        } else {
+          return file;
+        }
+      });
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addFile, removeFile, addOptimizeSize } = fileSlice.actions;
+export const { addFile, removeFile, addOptimizeSize, handlePreviewClicked } =
+  fileSlice.actions;
 
 export default fileSlice.reducer;
 

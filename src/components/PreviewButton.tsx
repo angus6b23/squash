@@ -1,12 +1,11 @@
 import { useContext, useEffect, type ReactElement } from "react";
 import { PiArrowsLeftRight } from "react-icons/pi";
-import useCurrentFile from "@/hooks/useCurrentFile";
-import { useSelector } from "react-redux";
-import { selectBulkOptions } from "@/store/bulkOptions";
 import { workerContext } from "@/store/workerContext";
 
 export default function PreviewButton(): ReactElement {
-  const { singleWorker }: { singleWorker: Worker } = useContext(workerContext);
+  const { singleWorker }: { singleWorker: Worker } = useContext(
+    workerContext,
+  ) as { singleWorker: Worker };
   const handlePreview = async () => {
     singleWorker.postMessage({});
   };

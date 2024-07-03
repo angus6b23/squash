@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
-import Uploader from "@/components/Uploader";
 import { File, selectFiles } from "@/store/file";
 import Editor from "@/pages/Editor";
 import { WorkerProvider } from "./store/workerContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import clsx from "clsx";
+import Landing from "./pages/Landing";
 
 function App() {
   const allFiles: File[] = useSelector(selectFiles);
@@ -28,7 +28,7 @@ function App() {
         pauseOnHover
         pauseOnFocusLoss
       />
-      {allFiles.length === 0 ? <Uploader /> : <Editor />}
+      {allFiles.length === 0 ? <Landing /> : <Editor />}
     </WorkerProvider>
   );
 }

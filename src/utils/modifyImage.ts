@@ -1,10 +1,13 @@
-import { BulkOptions } from "@/store/bulkOptions";
+import { TransformOption } from "@/store/bulkOptions";
 import resizeInit, {
   resize as resizeWasm,
 } from "@/codecs/resize/pkg/squoosh_resize";
 import decodeImage from "./decodeImage";
 
-export const resize = async (input: Blob, options: BulkOptions["resize"]) => {
+export const resize = async (
+  input: Blob,
+  options: TransformOption["resize"],
+) => {
   try {
     // Get Width and height of the original image
     const img = await createImageBitmap(input);
@@ -77,7 +80,10 @@ export const resize = async (input: Blob, options: BulkOptions["resize"]) => {
   }
 };
 
-export const rotate = async (input: Blob, option: BulkOptions["rotate"]) => {
+export const rotate = async (
+  input: Blob,
+  option: TransformOption["rotate"],
+) => {
   try {
     // Create a new image
     const img = await createImageBitmap(input);

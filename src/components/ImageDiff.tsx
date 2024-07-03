@@ -3,7 +3,7 @@ import { selectOutputState, setUrl, startLoading } from "@/store/outputState";
 import { selectBulkOptions } from "@/store/bulkOptions";
 import { workerContext } from "@/store/workerContext";
 import { getCurrentFileDimension } from "@/utils/getCurrentFile";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useDebouncedCallback } from "use-debounce";
@@ -15,11 +15,12 @@ export default function ImageDiff() {
   const dispatch = useDispatch();
 
   const [imageDimension, setImageDimension] = useState([0, 0]);
-  const fileIdRef = useRef(currentFile?.id);
   const { singleWorker } = useContext(workerContext) as {
     singleWorker: Worker;
   };
 
+  // Create ref for fileid used in message listener
+  const fileIdRef = useRef(currentFile?.id);
   useEffect(() => {
     fileIdRef.current = currentFile?.id;
   }, [currentFile]);
@@ -55,15 +56,12 @@ export default function ImageDiff() {
         type,
         payload,
         id,
-      }: { type: string; payload: Blob | Error; id: string } = data;
+        size,
+      }: { type: string; payload: Blob | Error; id: string; size: number } =
+        data;
       if (type === "preview" && fileIdRef.current === id) {
         URL.revokeObjectURL(url);
-        dispatch(
-          setUrl([
-            URL.createObjectURL(payload as Blob),
-            (payload as Blob).size,
-          ]),
-        );
+        dispatch(setUrl([URL.createObjectURL(payload as Blob), size]));
       } else if (type === "error") {
         toast.error((payload as Error).message);
       }
