@@ -1,5 +1,5 @@
 <div align = center>
-  <img src="https://raw.githubusercontent.com/angus6b23/squash/master/public/icon.svg" width="800" height="300" alt="squash-logo">
+  <img src="https://raw.githubusercontent.com/angus6b23/squash/master/public/og-banner.png" width="800" height="300" alt="squash-logo">
 </div>
 
 # Squash
