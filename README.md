@@ -1,5 +1,5 @@
 <div align = center>
-  <img src="https://raw.githubusercontent.com/angus6b23/squash/master/public/og-banner.png" width="800" height="600" alt="squash-logo">
+  <img src="https://raw.githubusercontent.com/angus6b23/squash/master/public/og-banner.png" width="800" height="420" alt="squash-logo">
 </div>
 
 # Squash
@@ -10,6 +10,7 @@
 </div>
 
 An image optimization tool allows you to compress and covert images in your browser
+[Live Site](https://squash.12a.app)
 
 ## Screenshots
 
