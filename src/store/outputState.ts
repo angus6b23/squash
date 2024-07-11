@@ -3,12 +3,14 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
 export interface OutputState {
+  previewUrl: string;
   url: string;
   loading: boolean;
   size: number;
 }
 
 const initialState: OutputState = {
+  previewUrl: "",
   url: "",
   loading: true,
   size: 0,
@@ -24,11 +26,12 @@ export const outputStateSlice = createSlice({
         loading: true,
       };
     },
-    setUrl: (state, action: PayloadAction<[string, number]>) => {
+    setUrl: (state, action: PayloadAction<[string, string, number]>) => {
       return {
         ...state,
-        url: action.payload[0],
-        size: action.payload[1],
+        previewUrl: action.payload[0],
+        url: action.payload[1],
+        size: action.payload[2],
         loading: false,
       };
     },

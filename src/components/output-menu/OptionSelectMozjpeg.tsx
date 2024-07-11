@@ -4,6 +4,7 @@ import { BaseSyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SliderOption from "./SliderOption";
 import CheckboxOption from "./CheckboxOption";
+import { PiInfo } from "react-icons/pi";
 
 function OptionSelectMozjpeg() {
   const dispatch = useDispatch();
@@ -88,10 +89,12 @@ function OptionSelectMozjpeg() {
             title="Progressive Rendering"
             checked={option.progressive}
             name="progressive"
+            tooltip={`Creates a "progressive JPEG" file.  In this type of JPEG file, the data is stored in multiple scans of increasing quality.`}
             onChange={handleOptionChange}
           />
           <SliderOption
             title="Smoothing"
+            tooltip="Smooth the input image to eliminate dithering noise."
             value={option.smoothing}
             name="smoothing"
             min={0}
@@ -118,6 +121,7 @@ function OptionSelectMozjpeg() {
             title="Trellis multipass"
             checked={option.trellis_multipass}
             name="trellis_multipass"
+            tooltip="Specifies whether multiple scans should be considered during trellis quantization."
             onChange={handleOptionChange}
           />
           {option.trellis_multipass && (
@@ -125,6 +129,7 @@ function OptionSelectMozjpeg() {
               title="Optimize zero block runs"
               checked={option.trellis_opt_zero}
               name="trellis_opt_zero"
+              tooltip="Specifies whether to optimize runs of zero blocks in trellis quantization."
               onChange={handleOptionChange}
             />
           )}
@@ -132,6 +137,7 @@ function OptionSelectMozjpeg() {
             title="Optimize after trellis quantization"
             checked={option.optimize_coding}
             name="optimize_coding"
+            tooltip="Specifies whether scan parameters should be optimized."
             onChange={handleOptionChange}
           />
           <SliderOption
@@ -140,6 +146,7 @@ function OptionSelectMozjpeg() {
             name="trellis_loops"
             min={1}
             max={50}
+            tooltip="Specifies the number of trellis quantization passes.  Huffman tables are updated between passes."
             onChange={handleOptionChange}
           />
         </div>

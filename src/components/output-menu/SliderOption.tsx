@@ -1,4 +1,5 @@
 import { BaseSyntheticEvent } from "react";
+import { PiInfo } from "react-icons/pi";
 
 interface SliderOptionProps {
   title: string;
@@ -7,13 +8,19 @@ interface SliderOptionProps {
   max: number;
   step?: number;
   name: string;
+  tooltip?: string;
   onChange: (e: BaseSyntheticEvent) => void;
 }
 function SliderOption(props: SliderOptionProps) {
   return (
     <>
       <div className="flex flex-row items-center justify-between">
-        <p>{props.title}</p>
+        <p className="flex gap-2 items-center">
+          {props.title}
+          {props.tooltip && (
+            <PiInfo className="text-sm opacity-60" title={props.tooltip} />
+          )}
+        </p>
         <input
           type="number"
           className="input input-sm text-right"

@@ -1,4 +1,4 @@
-import Uploader from "@/components/Uploader";
+import Uploader from "@/components/landing-page/Uploader";
 
 function Landing() {
   return (

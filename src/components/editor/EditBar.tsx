@@ -2,10 +2,10 @@ import { addFile } from "@/store/file";
 import { BaseSyntheticEvent, useRef, type ReactElement } from "react";
 import { PiCameraPlus } from "react-icons/pi";
 import { useDispatch } from "react-redux";
-import Resize from "./Resize";
-import Rotate from "./Rotate";
-import OptimizeButton from "./OptimizeButton";
-import Output from "./Output";
+import Resize from "@/components/editor/Resize";
+import Rotate from "@/components/editor/Rotate";
+import OptimizeButton from "@/components/editor/OptimizeButton";
+import Output from "@/components/editor/Output";
 import { getFileDetails } from "@/utils/convertUtils";
 
 const AddImageButton = () => {

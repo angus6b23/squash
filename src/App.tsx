@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import clsx from "clsx";
 import Landing from "./pages/Landing";
+import Navbar from "./components/Navbar";
 
 function App() {
   const allFiles: File[] = useSelector(selectFiles);
@@ -28,6 +29,7 @@ function App() {
         pauseOnHover
         pauseOnFocusLoss
       />
+      <Navbar />
       {allFiles.length === 0 ? <Landing /> : <Editor />}
     </WorkerProvider>
   );

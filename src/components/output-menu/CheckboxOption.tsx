@@ -1,16 +1,24 @@
 import { BaseSyntheticEvent } from "react";
+import { PiInfo } from "react-icons/pi";
 
 interface CheckboxOptionProps {
   name: string;
   title: string;
   checked: boolean;
   disabled?: boolean;
+  tooltip?: string;
   onChange: (e: BaseSyntheticEvent, checked: boolean) => void;
 }
 function CheckboxOption(props: CheckboxOptionProps) {
   return (
     <div className="flex flex-row justify-between items-center">
-      <p>{props.title}</p>
+      <p className="flex gap-2 items-center">
+        {props.title}
+        {props.tooltip && (
+          <PiInfo className="text-xs opacity-60" title={props.tooltip} />
+        )}
+      </p>
+
       <input
         type="checkbox"
         className="checkbox checkbox-sm checkbox-primary"

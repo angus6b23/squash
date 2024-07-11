@@ -45,3 +45,8 @@ export const imageDataToBlob = async (data: ImageData) => {
   ctx?.putImageData(data, 0, 0);
   return await canvas.convertToBlob();
 };
+
+export const calculatePercentDiff = (optimized: number, original: number) => {
+  const diff = ((optimized - original) / original) * 100;
+  return Math.abs(diff).toFixed(0) + "%";
+};

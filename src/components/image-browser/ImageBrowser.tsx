@@ -1,7 +1,7 @@
 import { useState, type ReactElement } from "react";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import "./ImageBrowser.css";
-import ImageBrowserControl from "./ImageBrowserControls";
+import ImageBrowserControl from "@/components/image-browser/ImageBrowserControls";
 import clsx from "clsx";
 import ImageDiff from "./ImageDiff";
 

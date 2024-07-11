@@ -1,6 +1,6 @@
 import { useEffect, type ReactElement } from "react";
-import { File, selectFiles, removeFile } from "../store/file";
-import { selectCurrentFileId, select } from "../store/currentFileId";
+import { File, selectFiles, removeFile } from "@/store/file";
+import { selectCurrentFileId, select } from "@/store/currentFileId";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import clsx from "clsx";

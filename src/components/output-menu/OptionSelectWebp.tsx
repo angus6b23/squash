@@ -62,6 +62,7 @@ function OptionSelectWebp() {
         checked={option.lossless === 1}
         name="lossless"
         title="Lossless"
+        tooltip="Compress the source without any loss"
         onChange={handleOptionChange}
       />
       {option.lossless === 0 ? (
@@ -88,7 +89,7 @@ function OptionSelectWebp() {
               <CheckboxOption
                 checked={option.alpha_compression === 1}
                 name="alpha_compression"
-                title="Compress alph"
+                title="Compress alpha"
                 onChange={handleOptionChange}
               />
               <SliderOption
@@ -97,6 +98,7 @@ function OptionSelectWebp() {
                 onChange={handleOptionChange}
                 min={0}
                 max={100}
+                tooltip="Transparency-compression quality"
                 title="Alpha quality"
               />
               <SliderOption
@@ -105,6 +107,7 @@ function OptionSelectWebp() {
                 onChange={handleOptionChange}
                 min={0}
                 max={2}
+                tooltip="Predictive filtering for alpha plane (0: none, 1: fast (default), 2:best)"
                 title="Alpha filter quality"
               />
               <CheckboxOption
@@ -125,6 +128,7 @@ function OptionSelectWebp() {
                 checked={option.filter_type === 1}
                 name="filter_type"
                 title="Strong filter"
+                tooltip="Use strong filter instead of simple (default)"
                 onChange={handleOptionChange}
               />
               <SliderOption
@@ -133,12 +137,14 @@ function OptionSelectWebp() {
                 onChange={handleFilterSharpness}
                 min={0}
                 max={7}
+                tooltip="Filter sharpness (0:most .. 7:least sharp), default=0"
                 title="Filter sharpness"
               />
               <CheckboxOption
                 checked={option.use_sharp_yuv === 1}
                 name="use_sharp_yuv"
                 title="Use Sharp YUV"
+                tooltip="Use sharper (and slower) RGB->YUV conversion (lossy only)"
                 onChange={handleOptionChange}
               />
               <SliderOption
@@ -147,6 +153,7 @@ function OptionSelectWebp() {
                 onChange={handleOptionChange}
                 min={1}
                 max={10}
+                tooltip="Analysis pass number"
                 title="Passes"
               />
               <SliderOption
@@ -163,6 +170,7 @@ function OptionSelectWebp() {
                 onChange={handleOptionChange}
                 min={1}
                 max={4}
+                tooltip="Number of segments to use"
                 title="Segments"
               />
               <SliderOption
@@ -179,7 +187,7 @@ function OptionSelectWebp() {
       ) : (
         <>
           <SliderOption
-            name="partitions"
+            name="losslessEffort"
             value={losslessEffort}
             onChange={handleLosslessEffortChange}
             min={0}
@@ -192,12 +200,14 @@ function OptionSelectWebp() {
             onChange={handleOptionChange}
             min={0}
             max={100}
+            tooltip="Use near-lossless image preprocessing"
             title="Near lossless"
           />
           <CheckboxOption
             checked={option.image_hint === 1}
             name="image_hint"
             title="Discrete tone image"
+            tooltip="Specify image characteristics hint"
             onChange={handleOptionChange}
           />
         </>
@@ -206,6 +216,7 @@ function OptionSelectWebp() {
         checked={option.exact === 1}
         name="exact"
         title="Preserve transparent data"
+        tooltip="Preserve RGB values in transparent area"
         onChange={handleOptionChange}
       />
     </div>

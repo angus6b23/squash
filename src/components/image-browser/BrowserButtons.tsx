@@ -1,5 +1,5 @@
-import TestFormatButton from "./TestFormatButton";
-import OptimizedFileSizes from "./OptimizedFileSizes";
+import TestFormatButton from "@/components/image-browser/TestFormatButton";
+import OptimizedFileSizes from "@/components/image-browser/OptimizedFileSizes";
 import useCurrentFile from "@/hooks/useCurrentFile";
 import { useContext, useEffect } from "react";
 import { workerContext } from "@/store/workerContext";

@@ -2,11 +2,7 @@ import useCurrentFile from "@/hooks/useCurrentFile";
 import useOptimizeResult from "@/hooks/useOptimizeResults";
 import prettyBytes from "pretty-bytes";
 import { PiArrowDown, PiArrowUp, PiCircleNotch } from "react-icons/pi";
-
-export const calculatePercentDiff = (optimized: number, original: number) => {
-  const diff = ((optimized - original) / original) * 100;
-  return Math.abs(diff).toFixed(0) + "%";
-};
+import { calculatePercentDiff } from "@/utils/convertUtils";
 
 const OptimizedResult = ({
   originalSize,

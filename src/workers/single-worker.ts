@@ -30,9 +30,9 @@ onmessage = async (e) => {
       const blob = await canvas.convertToBlob();
       postMessage({
         type: type,
+        encoded: encoded,
         payload: blob,
         id: file.id,
-        size: encoded.size,
       });
     } else {
       postMessage({ type: type, payload: encoded, id: file.id });

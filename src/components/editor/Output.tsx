@@ -1,11 +1,11 @@
 import { handleOutputFormat, selectBulkOptions } from "@/store/bulkOptions";
 import { ReactElement, BaseSyntheticEvent } from "react";
-import { PiFileImage } from "react-icons/pi";
+import { PiFileImage, PiInfo } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
-import OptionSelectMozjpeg from "./OptionSelectMozjpeg";
-import OptionsSelectOxipng from "./OptionSelectOxipng";
-import OptionsSelectJxl from "./OptionSelectJxl";
-import OptionSelectWebp from "./OptionSelectWebp";
+import OptionSelectMozjpeg from "@/components/output-menu/OptionSelectMozjpeg";
+import OptionsSelectOxipng from "@/components/output-menu/OptionSelectOxipng";
+import OptionsSelectJxl from "@/components/output-menu/OptionSelectJxl";
+import OptionSelectWebp from "@/components/output-menu/OptionSelectWebp";
 
 export default function Output(): ReactElement {
   const dispatch = useDispatch();
@@ -22,10 +22,16 @@ export default function Output(): ReactElement {
         </div>
         <div
           tabIndex={3}
-          className="dropdown-content z-[1] p-4 bg-base-100 w-80 flex flex-col gap-1 rounded-box max-h-80 overflow-y-auto"
+          className="dropdown-content z-[1] p-4 bg-base-200 w-96 flex flex-col gap-1 rounded-box max-h-80 overflow-y-auto"
         >
           <div className="flex justify-between items-center sticky top-0">
-            <p>Method</p>
+            <p className="flex items-center gap-2">
+              Method
+              <PiInfo
+                title="Determine what encoder and format will be used to generate the ouput image"
+                className="opacity-60 text-sm"
+              />
+            </p>
             <select
               className="select select-sm text-left"
               name="format"

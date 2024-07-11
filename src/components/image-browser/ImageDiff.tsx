@@ -10,7 +10,7 @@ import { useDebouncedCallback } from "use-debounce";
 
 export default function ImageDiff() {
   const currentFile = useCurrentFile();
-  const { loading, url } = useSelector(selectOutputState);
+  const { loading, previewUrl, url } = useSelector(selectOutputState);
   const bulkOption = useSelector(selectBulkOptions);
   const dispatch = useDispatch();
 
@@ -55,13 +55,24 @@ export default function ImageDiff() {
       const {
         type,
         payload,
+        encoded,
         id,
-        size,
-      }: { type: string; payload: Blob | Error; id: string; size: number } =
-        data;
+      }: {
+        type: string;
+        payload: Blob | Error;
+        id: string;
+        encoded: Blob;
+      } = data;
       if (type === "preview" && fileIdRef.current === id) {
+        URL.revokeObjectURL(previewUrl);
         URL.revokeObjectURL(url);
-        dispatch(setUrl([URL.createObjectURL(payload as Blob), size]));
+        dispatch(
+          setUrl([
+            URL.createObjectURL(payload as Blob),
+            URL.createObjectURL(encoded as Blob),
+            encoded.size,
+          ]),
+        );
       } else if (type === "error") {
         toast.error((payload as Error).message);
       }
@@ -81,7 +92,11 @@ export default function ImageDiff() {
         {loading ? (
           <img src={currentFile?.url} />
         ) : (
-          <img src={url} height={imageDimension[0]} width={imageDimension[1]} />
+          <img
+            src={previewUrl}
+            height={imageDimension[0]}
+            width={imageDimension[1]}
+          />
         )}
       </div>
       {/* Original Image here */}

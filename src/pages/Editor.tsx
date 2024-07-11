@@ -1,16 +1,16 @@
 import { type ReactElement } from "react";
-import FileSelector from "@/components/FileSelector";
-import ImageBrowser from "@/components/ImageBrowser";
-import EditBar from "@/components/EditBar";
-import EditorButtons from "@/components/EditorButtons";
-import InputOutputInfo from "@/components/InputOutputInfo";
+import FileSelector from "@/components/editor/FileSelector";
+import ImageBrowser from "@/components/image-browser/ImageBrowser";
+import EditBar from "@/components/editor/EditBar";
+import EditorButtons from "@/components/image-browser/BrowserButtons";
+import InputOutputInfo from "@/components/image-browser/InputOutputInfo";
 
 export interface EditorProps {}
 
 export default function Editor(): ReactElement {
   return (
     <>
-      <main className="grid grid-cols-12 h-dvh">
+      <main className="grid grid-cols-12 h-[calc(100dvh-48px)]">
         <section className="col-span-2 h-full overflow-y-auto">
           <FileSelector />
         </section>

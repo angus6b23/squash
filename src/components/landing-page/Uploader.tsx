@@ -1,7 +1,7 @@
 import { type ReactElement } from "react";
 import { Dropzone, ExtFile } from "@files-ui/react";
 import { useDispatch } from "react-redux";
-import { addFile } from "../store/file";
+import { addFile } from "@/store/file";
 import { getFileDetails } from "@/utils/convertUtils";
 
 export default function Uploader(): ReactElement {

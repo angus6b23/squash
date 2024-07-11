@@ -33,6 +33,7 @@ function OptionsSelectOxipng() {
         name="interlace"
         title="Interlace"
         onChange={handleOptionChange}
+        tooltip="Set the PNG interlacing type. Note that interlacing can add 25-50% to the size of an optimized image."
       />
       <SliderOption
         name="level"
@@ -41,6 +42,7 @@ function OptionsSelectOxipng() {
         min={0}
         max={6}
         title="Effort"
+        tooltip="Lower is faster, higher is better compression"
       />
     </div>
   );

@@ -95,12 +95,14 @@ function OptionsSelectJxl() {
             min={0}
             max={50000}
             step={100}
+            tooltip="Adds noise to the image emulating photographic film or sensor noise. Higher number = grainier image"
             onChange={handleOptionChange}
           />
           <CheckboxOption
             checked={option.progressive}
             name="progressive"
             title="Progressive rendering"
+            tooltip="Enable (more) progressive/responsive decoding"
             onChange={handleOptionChange}
           />
           <SliderOption
@@ -109,6 +111,7 @@ function OptionsSelectJxl() {
             name="effort"
             min={0}
             max={9}
+            tooltip="Higher numbers allow more computation at the expense of time."
             onChange={handleOptionChange}
           />
         </div>

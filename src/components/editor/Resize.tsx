@@ -40,7 +40,7 @@ export default function Resize(): ReactElement {
         </div>
         <div
           tabIndex={1}
-          className="dropdown-content z-[1] p-4 bg-base-100 w-64 flex flex-col gap-2 rounded-box"
+          className="dropdown-content z-[1] p-4 bg-base-200 w-64 flex flex-col gap-2 rounded-box"
         >
           <div className="flex justify-between items-center mb-2 pb-2 border-b-neutral border-b-[1px]">
             <p>Enable</p>
