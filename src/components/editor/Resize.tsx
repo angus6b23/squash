@@ -1,4 +1,11 @@
-import { selectBulkOptions, handleResize } from "@/store/bulkOptions";
+import {
+  selectBulkOptions,
+  handleResize,
+  TransformOption,
+  MaxWidthOption,
+  ByScaleOption,
+  handleResizeMethod,
+} from "@/store/bulkOptions";
 import currentFileId from "@/store/currentFileId";
 import { getCurrentFileDimension } from "@/utils/getCurrentFile";
 import {
@@ -7,8 +14,9 @@ import {
   useState,
   type ReactElement,
 } from "react";
-import { PiResize } from "react-icons/pi";
+import { PiInfo, PiResize } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
+import SliderOption from "../output-menu/SliderOption";
 
 export default function Resize(): ReactElement {
   const dispatch = useDispatch();
@@ -20,6 +28,19 @@ export default function Resize(): ReactElement {
         e.target.type === "checkbox" ? e.target.checked : e.target.value,
     };
     dispatch(handleResize(updatedResize));
+  };
+  const handleMethodChange = (e: BaseSyntheticEvent) => {
+    dispatch(handleResizeMethod(e.target.value));
+  };
+  const handleOptionChange = (e: BaseSyntheticEvent) => {
+    const updatedOption = {
+      ...resize.option,
+      [e.target.name]:
+        e.target.type === "checkbox"
+          ? e.target.checked
+          : Number(e.target.value),
+    };
+    dispatch(handleResize({ ...resize, option: updatedOption }));
   };
   const [imgWidth, setImgWidth] = useState(0);
   const [imgHeight, setImgHeight] = useState(0);
@@ -52,59 +73,172 @@ export default function Resize(): ReactElement {
               checked={resize.enabled}
             />
           </div>
-          <div className="flex justify-between items-center">
-            <p className="underline decoration-dotted">Keep ratio</p>
-            <input
-              type="checkbox"
-              name="keepRatio"
-              className="toggle toggle-primary"
-              onChange={handleChange}
-              disabled={!resize.enabled}
-              checked={resize.keepRatio}
-            />
-          </div>
-          <div className="flex justify-between items-center">
-            <p>Upscale images</p>
-            <input
-              type="checkbox"
-              name="upscale"
-              className="toggle toggle-primary"
-              onChange={handleChange}
-              disabled={!resize.enabled}
-              checked={resize.upscale}
-            />
-          </div>
-          <div className="flex justify-between items-center">
-            <p
-              className="tooltip underline decoration-dotted"
-              data-tip="The decided width of the ouput image. Setting the width when Keep ratio is enabled will unset the height"
-            >
-              Width
+          <div className="flex justify-between items-center sticky top-0">
+            <p className="flex items-center gap-2">
+              Method
+              <PiInfo title="" className="opacity-60 text-sm" />
             </p>
-            <input
-              type="number"
-              name="width"
-              className="input w-20 h-8 text-right placeholder:text-neutral"
-              min={0}
-              placeholder={imgWidth.toString()}
-              onChange={handleChange}
+            <select
+              className="select select-sm text-left"
+              name="method"
+              value={resize.method}
+              onChange={handleMethodChange}
               disabled={!resize.enabled}
-            />
+            >
+              <option value="maxWidth">Max Width</option>
+              <option value="maxHeight">Max Height</option>
+              <option value="byScale">Scale</option>
+              <option value="stretch">Stretch</option>
+              <option value="contain">Contain</option>
+            </select>
           </div>
-          <div className="flex justify-between items-center">
-            <p>Height</p>
-            <input
-              type="number"
-              name="height"
-              className="input w-20 h-8 text-right placeholder:text-neutral"
-              min={0}
-              placeholder={imgHeight.toString()}
-              onChange={handleChange}
-              disabled={!resize.enabled}
+          {resize.method === "maxWidth" ? (
+            <MaxWidthOptions
+              resize={resize}
+              imgWidth={imgWidth}
+              onChange={handleOptionChange}
             />
-          </div>
+          ) : resize.method === "maxHeight" ? (
+            <MaxHeightOption
+              resize={resize}
+              imgHeight={imgHeight}
+              onChange={handleOptionChange}
+            />
+          ) : resize.method === "byScale" ? (
+            <ScaleOption resize={resize} onChange={handleOptionChange} />
+          ) : (
+            <StretchOption
+              resize={resize}
+              onChange={handleOptionChange}
+              imgWidth={imgWidth}
+              imgHeight={imgHeight}
+            />
+          )}
         </div>
       </div>
     </>
   );
 }
+
+const MaxWidthOptions = (props: {
+  resize: TransformOption["resize"];
+  imgWidth: number;
+  onChange: (e: BaseSyntheticEvent) => void;
+}) => {
+  return (
+    <>
+      <div className="flex justify-between items-center">
+        <p>Upscale images</p>
+        <input
+          type="checkbox"
+          name="upscale"
+          className="toggle toggle-primary"
+          onChange={props.onChange}
+          disabled={!props.resize.enabled}
+          checked={(props.resize.option as MaxWidthOption).upscale}
+        />
+      </div>
+      <div className="flex justify-between items-center">
+        <p>Width</p>
+        <input
+          type="number"
+          name="width"
+          className="input w-20 h-8 text-right placeholder:text-neutral"
+          min={0}
+          placeholder={props.imgWidth.toString()}
+          disabled={!props.resize.enabled}
+          onChange={props.onChange}
+        />
+      </div>
+    </>
+  );
+};
+
+const MaxHeightOption = (props: {
+  resize: TransformOption["resize"];
+  imgHeight: number;
+  onChange: (e: BaseSyntheticEvent) => void;
+}) => {
+  return (
+    <>
+      <div className="flex justify-between items-center">
+        <p>Upscale images</p>
+        <input
+          type="checkbox"
+          name="upscale"
+          className="toggle toggle-primary"
+          onChange={props.onChange}
+          disabled={!props.resize.enabled}
+          checked={(props.resize.option as MaxWidthOption).upscale}
+        />
+      </div>
+      <div className="flex justify-between items-center">
+        <p>Height</p>
+        <input
+          type="number"
+          name="height"
+          className="input w-20 h-8 text-right placeholder:text-neutral"
+          min={0}
+          placeholder={props.imgHeight.toString()}
+          onChange={props.onChange}
+          disabled={!props.resize.enabled}
+        />
+      </div>
+    </>
+  );
+};
+
+const ScaleOption = (props: {
+  resize: TransformOption["resize"];
+  onChange: (e: BaseSyntheticEvent) => void;
+}) => {
+  return (
+    <>
+      <SliderOption
+        title="Scale"
+        min={0}
+        max={500}
+        value={(props.resize.option as ByScaleOption).scale}
+        name="scale"
+        onChange={props.onChange}
+        disabled={!props.resize.enabled}
+      />
+    </>
+  );
+};
+
+const StretchOption = (props: {
+  resize: TransformOption["resize"];
+  imgWidth: number;
+  imgHeight: number;
+  onChange: (e: BaseSyntheticEvent) => void;
+}) => {
+  return (
+    <>
+      <div className="flex justify-between items-center">
+        <p>Width</p>
+        <input
+          type="number"
+          name="width"
+          className="input w-20 h-8 text-right placeholder:text-neutral"
+          min={0}
+          placeholder={props.imgWidth.toString()}
+          onChange={props.onChange}
+          disabled={!props.resize.enabled}
+        />
+      </div>
+      <div className="flex justify-between items-center">
+        <p>Height</p>
+        <input
+          type="number"
+          name="height"
+          className="input w-20 h-8 text-right placeholder:text-neutral"
+          min={0}
+          placeholder={props.imgHeight.toString()}
+          onChange={props.onChange}
+          disabled={!props.resize.enabled}
+        />
+      </div>
+    </>
+  );
+};

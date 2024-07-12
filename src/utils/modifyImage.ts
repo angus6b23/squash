@@ -1,7 +1,6 @@
 import {
   ByScaleOption,
   ContainOption,
-  ExactOption,
   MaxHeightOption,
   MaxWidthOption,
   StretchOption,
@@ -59,8 +58,11 @@ export const resize = async (
         if (resizeOption.scale <= 0) {
           skipResize = true;
         } else {
-          targetHeight = Math.round((targetHeight * resizeOption.scale) / 100);
-          targetWidth = Math.round((targetWidth * resizeOption.scale) / 100);
+          targetHeight = Math.round((img.height * resizeOption.scale) / 100);
+          targetWidth = Math.round((img.width * resizeOption.scale) / 100);
+          if (resizeOption.scale > 100) {
+            targetMethod = 2;
+          }
         }
         break;
       }
@@ -68,6 +70,9 @@ export const resize = async (
         const resizeOption = options.option as StretchOption;
         targetWidth = resizeOption.width;
         targetHeight = resizeOption.height;
+        if (targetHeight * targetWidth > img.width * img.height) {
+          targetMethod = 2;
+        }
         break;
       }
       case "contain": {
@@ -92,8 +97,8 @@ export const resize = async (
     if (skipResize) {
       return input;
     }
+    // console.log(targetWidth, targetHeight, targetMethod);
 
-    // Calculate target Sizes
     await resizeInit();
     // console.log(new Uint8Array(decoded.data.buffer));
     const result = resizeWasm(
@@ -107,7 +112,13 @@ export const resize = async (
       false,
     );
     // Convert result back to blob using canvas
-    const canvas = new OffscreenCanvas(targetWidth, targetHeight);
+    const canvas =
+      options.method === "contain"
+        ? new OffscreenCanvas(
+            (options.option as ContainOption).width,
+            (options.option as ContainOption).height,
+          )
+        : new OffscreenCanvas(targetWidth, targetHeight);
     const ctx = canvas.getContext("2d") as OffscreenCanvasRenderingContext2D;
     const resultImgData = new ImageData(targetWidth, targetHeight);
     resultImgData.data.set(result);
@@ -115,8 +126,8 @@ export const resize = async (
       const resizeOption = options.option as ContainOption;
       ctx.putImageData(
         resultImgData,
-        (targetWidth - resizeOption.width) / 2,
-        (targetHeight - resizeOption.height) / 2,
+        -(targetWidth - resizeOption.width) / 2,
+        -(targetHeight - resizeOption.height) / 2,
       );
     } else {
       ctx.putImageData(resultImgData, 0, 0);

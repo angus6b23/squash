@@ -92,6 +92,76 @@ export const bulkOptionsSlice = createSlice({
         resize: action.payload,
       };
     },
+    handleResizeMethod: (
+      state,
+      action: PayloadAction<TransformOption["resize"]["method"]>,
+    ) => {
+      switch (action.payload) {
+        case "maxWidth":
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "maxWidth",
+              option: {
+                upscale: false,
+                width: 0,
+              } as MaxWidthOption,
+            },
+          };
+        case "maxHeight":
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "maxHeight",
+              option: {
+                upscale: false,
+                height: 0,
+              } as MaxHeightOption,
+            },
+          };
+        case "byScale":
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "byScale",
+              option: {
+                scale: 100,
+              } as ByScaleOption,
+            },
+          };
+        case "stretch": {
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "stretch",
+              option: {
+                width: 0,
+                height: 0,
+              } as StretchOption,
+            },
+          };
+        }
+        case "contain": {
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "contain",
+              option: {
+                width: 0,
+                height: 0,
+              } as ContainOption,
+            },
+          };
+        }
+        default:
+          return state;
+      }
+    },
     handleRotate: (state, action: PayloadAction<TransformOption["rotate"]>) => {
       return {
         ...state,
@@ -177,6 +247,7 @@ export const bulkOptionsSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   handleResize,
+  handleResizeMethod,
   handleRotate,
   handleOutputFormat,
   handleOutputOption,

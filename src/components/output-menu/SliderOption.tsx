@@ -9,6 +9,7 @@ interface SliderOptionProps {
   step?: number;
   name: string;
   tooltip?: string;
+  disabled?: boolean;
   onChange: (e: BaseSyntheticEvent) => void;
 }
 function SliderOption(props: SliderOptionProps) {
@@ -30,6 +31,7 @@ function SliderOption(props: SliderOptionProps) {
           name={props.name}
           value={props.value}
           onChange={props.onChange}
+          disabled={props.disabled}
         />
       </div>
       <input
@@ -41,6 +43,7 @@ function SliderOption(props: SliderOptionProps) {
         value={props.value}
         name={props.name}
         onChange={props.onChange}
+        disabled={props.disabled}
       />
     </>
   );
