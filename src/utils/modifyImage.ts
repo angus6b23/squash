@@ -1,4 +1,12 @@
-import { TransformOption } from "@/store/bulkOptions";
+import {
+  ByScaleOption,
+  ContainOption,
+  MaxHeightOption,
+  MaxWidthOption,
+  StretchOption,
+  TransformOption,
+  WAresizeMethod,
+} from "@/store/bulkOptions";
 import resizeInit, {
   resize as resizeWasm,
 } from "@/codecs/resize/pkg/squoosh_resize";
@@ -19,43 +27,78 @@ export const resize = async (
 
     let targetWidth = 0;
     let targetHeight = 0;
-
-    // Calculate target Sizes
-    if (options.keepRatio) {
-      const imageAspect = img.width / img.height;
-      if (options.height) {
-        targetHeight = Math.round(options.height);
-        targetWidth = Math.round(imageAspect * targetHeight);
-      } else if (options.width) {
-        targetWidth = Math.round(options.width);
-        targetHeight = Math.round(targetWidth / imageAspect);
+    let skipResize = false;
+    let targetMethod: WAresizeMethod = 3;
+    const imgRatio = img.width / img.height;
+    switch (options.method) {
+      case "maxWidth": {
+        const resizeOption = options.option as MaxWidthOption;
+        if (resizeOption.upscale || img.width > resizeOption.width) {
+          targetWidth = Math.round(resizeOption.width);
+          targetHeight = Math.round(targetWidth / imgRatio);
+          targetMethod = img.width < targetWidth ? 2 : 3;
+        } else {
+          skipResize = true;
+        }
+        break;
       }
-    } else {
-      [targetWidth, targetHeight] = [
-        options.width as number,
-        options.height as number,
-      ];
-    }
+      case "maxHeight": {
+        const resizeOption = options.option as MaxHeightOption;
+        if (resizeOption.upscale || img.height > resizeOption.height) {
+          targetHeight = Math.round(resizeOption.height);
+          targetWidth = Math.round(imgRatio * targetHeight);
+          targetMethod = img.height < targetHeight ? 2 : 3;
+        } else {
+          skipResize = true;
+        }
+        break;
+      }
+      case "byScale": {
+        const resizeOption = options.option as ByScaleOption;
+        if (resizeOption.scale <= 0) {
+          skipResize = true;
+        } else {
+          targetHeight = Math.round((img.height * resizeOption.scale) / 100);
+          targetWidth = Math.round((img.width * resizeOption.scale) / 100);
+          if (resizeOption.scale > 100) {
+            targetMethod = 2;
+          }
+        }
+        break;
+      }
+      case "stretch": {
+        const resizeOption = options.option as StretchOption;
+        targetWidth = resizeOption.width;
+        targetHeight = resizeOption.height;
+        if (targetHeight * targetWidth > img.width * img.height) {
+          targetMethod = 2;
+        }
+        break;
+      }
+      case "contain": {
+        const resizeOption = options.option as ContainOption;
+        if (resizeOption.width > resizeOption.height) {
+          targetWidth = resizeOption.width;
+          targetHeight = Math.round(resizeOption.width / imgRatio);
+        } else {
+          targetHeight = resizeOption.height;
+          targetWidth = Math.round(resizeOption.height * imgRatio);
+        }
 
-    // Simply return input blob url if upcale is disabled and target dimensions are larger than original one
-    if (!options.upscale) {
-      if (targetWidth > img.width || targetHeight > img.height) {
-        return input;
+        break;
+      }
+      default: {
+        throw new Error("Invalid resize method");
       }
     }
-
-    // Auto select resize method
-    // Use Lanczos3 for downscale and Mitchell for upscale, see https://github.com/PistonDevelopers/resize
-    let targetMethod = 0;
-    if (options.method === 4) {
-      if (targetWidth > img.width || targetHeight > img.height) {
-        targetMethod = 3;
-      } else {
-        targetMethod = 2;
-      }
-    } else {
-      targetMethod = options.method;
+    if (targetWidth <= 0 || targetHeight <= 0) {
+      skipResize = true;
     }
+    if (skipResize) {
+      return input;
+    }
+    // console.log(targetWidth, targetHeight, targetMethod);
+
     await resizeInit();
     // console.log(new Uint8Array(decoded.data.buffer));
     const result = resizeWasm(
@@ -69,11 +112,26 @@ export const resize = async (
       false,
     );
     // Convert result back to blob using canvas
-    const canvas = new OffscreenCanvas(targetWidth, targetHeight);
+    const canvas =
+      options.method === "contain"
+        ? new OffscreenCanvas(
+            (options.option as ContainOption).width,
+            (options.option as ContainOption).height,
+          )
+        : new OffscreenCanvas(targetWidth, targetHeight);
     const ctx = canvas.getContext("2d") as OffscreenCanvasRenderingContext2D;
     const resultImgData = new ImageData(targetWidth, targetHeight);
     resultImgData.data.set(result);
-    ctx.putImageData(resultImgData, 0, 0);
+    if (options.method === "contain") {
+      const resizeOption = options.option as ContainOption;
+      ctx.putImageData(
+        resultImgData,
+        -(targetWidth - resizeOption.width) / 2,
+        -(targetHeight - resizeOption.height) / 2,
+      );
+    } else {
+      ctx.putImageData(resultImgData, 0, 0);
+    }
     return await canvas.convertToBlob();
   } catch (e) {
     return e as Error;

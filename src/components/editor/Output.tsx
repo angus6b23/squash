@@ -28,7 +28,7 @@ export default function Output(): ReactElement {
             <p className="flex items-center gap-2">
               Method
               <PiInfo
-                title="Determine what encoder and format will be used to generate the ouput image"
+                title="Specify what encoder and format to be used for generating the ouput image"
                 className="opacity-60 text-sm"
               />
             </p>

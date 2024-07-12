@@ -11,21 +11,22 @@ import {
   defaultWebpOption,
 } from "@/utils/defaultOptions";
 
-enum resizeMethod {
+export enum WAresizeMethod {
   Triange,
   Catrom,
   Mitchell,
   Lancozs3,
-  default,
 }
 export interface TransformOption {
   resize: {
     enabled: boolean;
-    keepRatio: boolean;
-    upscale: boolean;
-    width: number | undefined;
-    height: number | undefined;
-    method: resizeMethod;
+    method: ResizeMethod;
+    option:
+      | MaxWidthOption
+      | MaxHeightOption
+      | ByScaleOption
+      | StretchOption
+      | ContainOption;
   };
   rotate: {
     enabled: boolean;
@@ -36,15 +37,40 @@ export interface TransformOption {
     option: AnyEncodeOption;
   };
 }
+export type ResizeMethod =
+  | "maxWidth"
+  | "maxHeight"
+  | "byScale"
+  | "stretch"
+  | "contain";
+export interface MaxWidthOption {
+  upscale: boolean;
+  width: number;
+}
+export interface MaxHeightOption {
+  upscale: boolean;
+  height: number;
+}
+export interface ByScaleOption {
+  scale: number;
+}
+export interface ContainOption {
+  width: number;
+  height: number;
+}
+export interface StretchOption {
+  width: number;
+  height: number;
+}
 
 const initialState: TransformOption = {
   resize: {
     enabled: false,
-    keepRatio: true,
-    upscale: false,
-    width: undefined,
-    height: undefined,
-    method: 4,
+    method: "maxWidth",
+    option: {
+      upscale: false,
+      width: 0,
+    },
   },
   rotate: {
     enabled: false,
@@ -65,6 +91,76 @@ export const bulkOptionsSlice = createSlice({
         ...state,
         resize: action.payload,
       };
+    },
+    handleResizeMethod: (
+      state,
+      action: PayloadAction<TransformOption["resize"]["method"]>,
+    ) => {
+      switch (action.payload) {
+        case "maxWidth":
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "maxWidth",
+              option: {
+                upscale: false,
+                width: 0,
+              } as MaxWidthOption,
+            },
+          };
+        case "maxHeight":
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "maxHeight",
+              option: {
+                upscale: false,
+                height: 0,
+              } as MaxHeightOption,
+            },
+          };
+        case "byScale":
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "byScale",
+              option: {
+                scale: 100,
+              } as ByScaleOption,
+            },
+          };
+        case "stretch": {
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "stretch",
+              option: {
+                width: 0,
+                height: 0,
+              } as StretchOption,
+            },
+          };
+        }
+        case "contain": {
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "contain",
+              option: {
+                width: 0,
+                height: 0,
+              } as ContainOption,
+            },
+          };
+        }
+        default:
+          return state;
+      }
     },
     handleRotate: (state, action: PayloadAction<TransformOption["rotate"]>) => {
       return {
@@ -151,6 +247,7 @@ export const bulkOptionsSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   handleResize,
+  handleResizeMethod,
   handleRotate,
   handleOutputFormat,
   handleOutputOption,

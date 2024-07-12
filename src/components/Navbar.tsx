@@ -41,6 +41,7 @@ export default function Navbar(): ReactElement {
                   className="theme-controller btn btn-ghost justify-start text-base-content"
                   aria-label="Iceberg"
                   value="iceberg"
+                  defaultChecked
                 />
               </li>
             </ul>
