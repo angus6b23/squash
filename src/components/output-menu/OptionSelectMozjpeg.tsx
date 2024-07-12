@@ -4,7 +4,6 @@ import { BaseSyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SliderOption from "./SliderOption";
 import CheckboxOption from "./CheckboxOption";
-import { PiInfo } from "react-icons/pi";
 
 function OptionSelectMozjpeg() {
   const dispatch = useDispatch();
