@@ -11,21 +11,22 @@ import {
   defaultWebpOption,
 } from "@/utils/defaultOptions";
 
-enum resizeMethod {
+export enum WAresizeMethod {
   Triange,
   Catrom,
   Mitchell,
   Lancozs3,
-  default,
 }
 export interface TransformOption {
   resize: {
     enabled: boolean;
-    keepRatio: boolean;
-    upscale: boolean;
-    width: number | undefined;
-    height: number | undefined;
-    method: resizeMethod;
+    method: ResizeMethod;
+    option:
+      | MaxWidthOption
+      | MaxHeightOption
+      | ByScaleOption
+      | StretchOption
+      | ContainOption;
   };
   rotate: {
     enabled: boolean;
@@ -36,15 +37,40 @@ export interface TransformOption {
     option: AnyEncodeOption;
   };
 }
+export type ResizeMethod =
+  | "maxWidth"
+  | "maxHeight"
+  | "byScale"
+  | "stretch"
+  | "contain";
+export interface MaxWidthOption {
+  upscale: boolean;
+  width: number;
+}
+export interface MaxHeightOption {
+  upscale: boolean;
+  height: number;
+}
+export interface ByScaleOption {
+  scale: number;
+}
+export interface ContainOption {
+  width: number;
+  height: number;
+}
+export interface StretchOption {
+  width: number;
+  height: number;
+}
 
 const initialState: TransformOption = {
   resize: {
     enabled: false,
-    keepRatio: true,
-    upscale: false,
-    width: undefined,
-    height: undefined,
-    method: 4,
+    method: "maxWidth",
+    option: {
+      upscale: false,
+      width: 0,
+    },
   },
   rotate: {
     enabled: false,
