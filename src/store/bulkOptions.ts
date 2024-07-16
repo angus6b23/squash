@@ -42,6 +42,7 @@ export type ResizeMethod =
   | "maxHeight"
   | "byScale"
   | "stretch"
+  | "crop"
   | "contain";
 export interface MaxWidthOption {
   upscale: boolean;
@@ -142,6 +143,19 @@ export const bulkOptionsSlice = createSlice({
                 width: 0,
                 height: 0,
               } as StretchOption,
+            },
+          };
+        }
+        case "crop": {
+          return {
+            ...state,
+            resize: {
+              ...state.resize,
+              method: "crop",
+              option: {
+                width: 0,
+                height: 0,
+              } as ContainOption,
             },
           };
         }

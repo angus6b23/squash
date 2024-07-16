@@ -78,6 +78,17 @@ export const resize = async (
       case "contain": {
         const resizeOption = options.option as ContainOption;
         if (resizeOption.width > resizeOption.height) {
+          targetHeight = resizeOption.height;
+          targetWidth = Math.round(resizeOption.height * imgRatio);
+        } else {
+          targetWidth = resizeOption.width;
+          targetHeight = Math.round(resizeOption.width / imgRatio);
+        }
+        break;
+      }
+      case "crop": {
+        const resizeOption = options.option as ContainOption;
+        if (resizeOption.width > resizeOption.height) {
           targetWidth = resizeOption.width;
           targetHeight = Math.round(resizeOption.width / imgRatio);
         } else {
@@ -112,22 +123,31 @@ export const resize = async (
       false,
     );
     // Convert result back to blob using canvas
-    const canvas =
-      options.method === "contain"
-        ? new OffscreenCanvas(
-            (options.option as ContainOption).width,
-            (options.option as ContainOption).height,
-          )
-        : new OffscreenCanvas(targetWidth, targetHeight);
+    let canvas;
+    if (options.method === "crop" || options.method === "contain") {
+      canvas = new OffscreenCanvas(
+        (options.option as ContainOption).width,
+        (options.option as ContainOption).height,
+      );
+    } else {
+      canvas = new OffscreenCanvas(targetWidth, targetHeight);
+    }
     const ctx = canvas.getContext("2d") as OffscreenCanvasRenderingContext2D;
     const resultImgData = new ImageData(targetWidth, targetHeight);
     resultImgData.data.set(result);
-    if (options.method === "contain") {
+    if (options.method === "crop") {
       const resizeOption = options.option as ContainOption;
       ctx.putImageData(
         resultImgData,
         -(targetWidth - resizeOption.width) / 2,
         -(targetHeight - resizeOption.height) / 2,
+      );
+    } else if (options.method === "contain") {
+      const resizeOption = options.option as ContainOption;
+      ctx.putImageData(
+        resultImgData,
+        (resizeOption.width - targetWidth) / 2,
+        (resizeOption.height - targetHeight) / 2,
       );
     } else {
       ctx.putImageData(resultImgData, 0, 0);
