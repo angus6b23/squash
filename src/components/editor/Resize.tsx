@@ -89,6 +89,7 @@ export default function Resize(): ReactElement {
               <option value="maxHeight">Max Height</option>
               <option value="byScale">Scale</option>
               <option value="stretch">Stretch</option>
+              <option value="crop">Crop</option>
               <option value="contain">Contain</option>
             </select>
           </div>
