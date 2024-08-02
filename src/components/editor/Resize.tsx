@@ -5,6 +5,7 @@ import {
   MaxWidthOption,
   ByScaleOption,
   handleResizeMethod,
+  StretchOption,
 } from "@/store/bulkOptions";
 import currentFileId from "@/store/currentFileId";
 import { getCurrentFileDimension } from "@/utils/getCurrentFile";
@@ -108,7 +109,7 @@ export default function Resize(): ReactElement {
           ) : resize.method === "byScale" ? (
             <ScaleOption resize={resize} onChange={handleOptionChange} />
           ) : (
-            <StretchOption
+            <StretchSetting
               resize={resize}
               onChange={handleOptionChange}
               imgWidth={imgWidth}
@@ -208,12 +209,13 @@ const ScaleOption = (props: {
   );
 };
 
-const StretchOption = (props: {
+const StretchSetting = (props: {
   resize: TransformOption["resize"];
   imgWidth: number;
   imgHeight: number;
   onChange: (e: BaseSyntheticEvent) => void;
 }) => {
+  const { resize } = useSelector(selectBulkOptions);
   return (
     <>
       <div className="flex justify-between items-center">
@@ -224,6 +226,7 @@ const StretchOption = (props: {
           className="input w-20 h-8 text-right placeholder:text-neutral"
           min={0}
           placeholder={props.imgWidth.toString()}
+          value={(resize.option as StretchOption).width}
           onChange={props.onChange}
           disabled={!props.resize.enabled}
         />
@@ -235,6 +238,7 @@ const StretchOption = (props: {
           name="height"
           className="input w-20 h-8 text-right placeholder:text-neutral"
           min={0}
+          value={(resize.option as StretchOption).height}
           placeholder={props.imgHeight.toString()}
           onChange={props.onChange}
           disabled={!props.resize.enabled}
