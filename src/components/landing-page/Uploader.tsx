@@ -25,8 +25,12 @@ export default function Uploader(): ReactElement {
         onChange={handleChange}
         accept="image/*"
         multiple
-        className="text-base-content"
-        headerConfig={{ customHeader: <></> }}
+        className="text-base-content border-2 border-primary"
+        color="oklch(var(--bc))"
+        minHeight="360px"
+        label="Drop your files or click to select files"
+        header={false}
+        footer={false}
       />
     </>
   );
