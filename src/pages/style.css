@@ -1,0 +1,14 @@
+.primary {
+  fill: oklch(var(--p));
+  stroke: oklch(var(--p));
+}
+
+.secondary {
+  fill: oklch(var(--s));
+  stroke: oklch(var(--s));
+}
+
+.primary-content {
+  fill: oklch(var(--pc));
+  stroke: oklch(var(--pc));
+}
